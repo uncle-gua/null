@@ -125,5 +125,5 @@ func (u Uint32) Value() (driver.Value, error) {
 	if !u.Valid {
 		return nil, nil
 	}
-	return uint64(u.Uint32), nil
+	return int64(u.Uint32), nil
 }
