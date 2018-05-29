@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 
 	"github.com/volatiletech/sqlboiler/randomize"
-	"gopkg.in/volatiletech/null.v6/convert"
+	"gopkg.in/volatiletech/null.v7/convert"
 )
 
 // NullBytes is a global byte slice of JSON null

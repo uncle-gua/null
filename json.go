@@ -8,7 +8,7 @@ import (
 	"fmt"
 
 	"github.com/volatiletech/sqlboiler/randomize"
-	"gopkg.in/volatiletech/null.v6/convert"
+	"gopkg.in/volatiletech/null.v7/convert"
 )
 
 // JSON is a nullable []byte.

@@ -7,7 +7,7 @@ import (
 	"errors"
 
 	"github.com/volatiletech/sqlboiler/randomize"
-	"gopkg.in/volatiletech/null.v6/convert"
+	"gopkg.in/volatiletech/null.v7/convert"
 )
 
 // Bool is a nullable bool.

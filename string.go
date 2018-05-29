@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 
 	"github.com/volatiletech/sqlboiler/randomize"
-	"gopkg.in/volatiletech/null.v6/convert"
+	"gopkg.in/volatiletech/null.v7/convert"
 )
 
 // String is a nullable string. It supports SQL and JSON serialization.

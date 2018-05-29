@@ -10,11 +10,11 @@ All types implement `sql.Scanner` and `driver.Valuer`, so you can use this libra
 
 Install:
 
-`go get -u "gopkg.in/volatiletech/null.v6"`
+`go get -u "gopkg.in/volatiletech/null.v7"`
 
 ### null package
 
-`import "gopkg.in/volatiletech/null.v6"`
+`import "gopkg.in/volatiletech/null.v7"`
 
 The following are all types supported in this package. All types will marshal to JSON null if Invalid or SQL source data is null.
 

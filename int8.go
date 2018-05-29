@@ -9,7 +9,7 @@ import (
 	"strconv"
 
 	"github.com/volatiletech/sqlboiler/randomize"
-	"gopkg.in/volatiletech/null.v6/convert"
+	"gopkg.in/volatiletech/null.v7/convert"
 )
 
 // Int8 is an nullable int8.
