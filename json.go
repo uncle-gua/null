@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/volatiletech/sqlboiler/randomize"
 	"gopkg.in/volatiletech/null.v6/convert"
 )
 
@@ -154,4 +155,10 @@ func (j JSON) Value() (driver.Value, error) {
 		return nil, nil
 	}
 	return j.JSON, nil
+}
+
+// Randomize for sqlboiler
+func (j *JSON) Randomize(seed *randomize.Seed, fieldType string, shouldBeNull bool) {
+	j.JSON = []byte(`"` + randomize.Str(seed, 1) + `"`)
+	j.Valid = true
 }

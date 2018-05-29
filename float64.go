@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"strconv"
 
+	"github.com/volatiletech/sqlboiler/randomize"
 	"gopkg.in/volatiletech/null.v6/convert"
 )
 
@@ -115,4 +116,15 @@ func (f Float64) Value() (driver.Value, error) {
 		return nil, nil
 	}
 	return f.Float64, nil
+}
+
+// Randomize for sqlboiler
+func (f *Float64) Randomize(seed *randomize.Seed, fieldType string, shouldBeNull bool) {
+	if shouldBeNull {
+		f.Float64 = 0
+		f.Valid = false
+	} else {
+		f.Float64 = float64(seed.NextInt()%10)/10.0 + float64(seed.NextInt()%10)
+		f.Valid = true
+	}
 }

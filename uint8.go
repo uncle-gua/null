@@ -8,6 +8,7 @@ import (
 	"math"
 	"strconv"
 
+	"github.com/volatiletech/sqlboiler/randomize"
 	"gopkg.in/volatiletech/null.v6/convert"
 )
 
@@ -126,4 +127,15 @@ func (u Uint8) Value() (driver.Value, error) {
 		return nil, nil
 	}
 	return int64(u.Uint8), nil
+}
+
+// Randomize for sqlboiler
+func (u *Uint8) Randomize(seed *randomize.Seed, fieldType string, shouldBeNull bool) {
+	if shouldBeNull {
+		u.Uint8 = 0
+		u.Valid = false
+	} else {
+		u.Uint8 = uint8(seed.NextInt() % math.MaxUint8)
+		u.Valid = true
+	}
 }

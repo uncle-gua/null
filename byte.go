@@ -5,6 +5,8 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
+
+	"github.com/volatiletech/sqlboiler/randomize"
 )
 
 // Byte is an nullable int.
@@ -132,4 +134,15 @@ func (b Byte) Value() (driver.Value, error) {
 		return nil, nil
 	}
 	return []byte{b.Byte}, nil
+}
+
+// Randomize for sqlboiler
+func (b *Byte) Randomize(seed *randomize.Seed, fieldType string, shouldBeNull bool) {
+	if shouldBeNull {
+		b.Byte = byte(0)
+		b.Valid = false
+	} else {
+		b.Byte = byte(seed.NextInt()%60 + 65) // Ascii range
+		b.Valid = true
+	}
 }
