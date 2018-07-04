@@ -6,8 +6,7 @@ import (
 	"encoding/json"
 	"strconv"
 
-	"github.com/volatiletech/sqlboiler/randomize"
-	"gopkg.in/volatiletech/null.v7/convert"
+	"github.com/volatiletech/null/convert"
 )
 
 // Uint64 is an nullable uint64.
@@ -122,12 +121,12 @@ func (u Uint64) Value() (driver.Value, error) {
 }
 
 // Randomize for sqlboiler
-func (u *Uint64) Randomize(seed *randomize.Seed, fieldType string, shouldBeNull bool) {
+func (u *Uint64) Randomize(nextInt func() int64, fieldType string, shouldBeNull bool) {
 	if shouldBeNull {
 		u.Uint64 = 0
 		u.Valid = false
 	} else {
-		u.Uint64 = uint64(seed.NextInt())
+		u.Uint64 = uint64(nextInt())
 		u.Valid = true
 	}
 }

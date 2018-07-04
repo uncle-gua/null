@@ -7,8 +7,8 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/volatiletech/null/convert"
 	"github.com/volatiletech/sqlboiler/randomize"
-	"gopkg.in/volatiletech/null.v7/convert"
 )
 
 // JSON is a nullable []byte.
@@ -158,7 +158,7 @@ func (j JSON) Value() (driver.Value, error) {
 }
 
 // Randomize for sqlboiler
-func (j *JSON) Randomize(seed *randomize.Seed, fieldType string, shouldBeNull bool) {
-	j.JSON = []byte(`"` + randomize.Str(seed, 1) + `"`)
+func (j *JSON) Randomize(nextInt func() int64, fieldType string, shouldBeNull bool) {
+	j.JSON = []byte(`"` + randomize.Str(nextInt, 1) + `"`)
 	j.Valid = true
 }

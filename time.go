@@ -120,12 +120,12 @@ func (t Time) Value() (driver.Value, error) {
 }
 
 // Randomize for sqlboiler
-func (t *Time) Randomize(seed *randomize.Seed, fieldType string, shouldBeNull bool) {
+func (t *Time) Randomize(nextInt func() int64, fieldType string, shouldBeNull bool) {
 	if shouldBeNull {
 		t.Time = time.Time{}
 		t.Valid = false
 	} else {
-		t.Time = randomize.Date(seed)
+		t.Time = randomize.Date(nextInt)
 		t.Valid = true
 	}
 }

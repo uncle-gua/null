@@ -7,8 +7,7 @@ import (
 	"math"
 	"strconv"
 
-	"github.com/volatiletech/sqlboiler/randomize"
-	"gopkg.in/volatiletech/null.v7/convert"
+	"github.com/volatiletech/null/convert"
 )
 
 // Int is an nullable int.
@@ -125,12 +124,12 @@ func (i Int) Value() (driver.Value, error) {
 }
 
 // Randomize for sqlboiler
-func (i *Int) Randomize(seed *randomize.Seed, fieldType string, shouldBeNull bool) {
+func (i *Int) Randomize(nextInt func() int64, fieldType string, shouldBeNull bool) {
 	if shouldBeNull {
 		i.Int = 0
 		i.Valid = false
 	} else {
-		i.Int = int(int32(seed.NextInt() % math.MaxInt32))
+		i.Int = int(int32(nextInt() % math.MaxInt32))
 		i.Valid = true
 	}
 }

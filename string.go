@@ -5,8 +5,8 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 
+	"github.com/volatiletech/null/convert"
 	"github.com/volatiletech/sqlboiler/randomize"
-	"gopkg.in/volatiletech/null.v7/convert"
 )
 
 // String is a nullable string. It supports SQL and JSON serialization.
@@ -118,8 +118,8 @@ func (s String) Value() (driver.Value, error) {
 }
 
 // Randomize for sqlboiler
-func (s *String) Randomize(seed *randomize.Seed, fieldType string, shouldBeNull bool) {
-	str, ok := randomize.FormattedString(seed, fieldType)
+func (s *String) Randomize(nextInt func() int64, fieldType string, shouldBeNull bool) {
+	str, ok := randomize.FormattedString(nextInt, fieldType)
 	if ok {
 		s.String = str
 		s.Valid = true
@@ -130,7 +130,7 @@ func (s *String) Randomize(seed *randomize.Seed, fieldType string, shouldBeNull 
 		s.String = ""
 		s.Valid = false
 	} else {
-		s.String = randomize.Str(seed, 1)
+		s.String = randomize.Str(nextInt, 1)
 		s.Valid = true
 	}
 }

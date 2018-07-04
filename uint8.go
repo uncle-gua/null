@@ -8,8 +8,7 @@ import (
 	"math"
 	"strconv"
 
-	"github.com/volatiletech/sqlboiler/randomize"
-	"gopkg.in/volatiletech/null.v7/convert"
+	"github.com/volatiletech/null/convert"
 )
 
 // Uint8 is an nullable uint8.
@@ -130,12 +129,12 @@ func (u Uint8) Value() (driver.Value, error) {
 }
 
 // Randomize for sqlboiler
-func (u *Uint8) Randomize(seed *randomize.Seed, fieldType string, shouldBeNull bool) {
+func (u *Uint8) Randomize(nextInt func() int64, fieldType string, shouldBeNull bool) {
 	if shouldBeNull {
 		u.Uint8 = 0
 		u.Valid = false
 	} else {
-		u.Uint8 = uint8(seed.NextInt() % math.MaxUint8)
+		u.Uint8 = uint8(nextInt() % math.MaxUint8)
 		u.Valid = true
 	}
 }
