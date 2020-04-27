@@ -7,8 +7,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/volatiletech/null/convert"
-	"github.com/volatiletech/sqlboiler/randomize"
+	"github.com/volatiletech/null/v8/convert"
+	"github.com/volatiletech/randomize"
 )
 
 // JSON is a nullable []byte.
