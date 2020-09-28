@@ -15,31 +15,38 @@ import (
 type Uint32 struct {
 	Uint32 uint32
 	Valid  bool
+	set    bool
 }
 
 // NewUint32 creates a new Uint32
-func NewUint32(i uint32, valid bool) Uint32 {
+func NewUint32(i uint32, valid, set bool) Uint32 {
 	return Uint32{
 		Uint32: i,
 		Valid:  valid,
+		set:    set,
 	}
 }
 
 // Uint32From creates a new Uint32 that will always be valid.
 func Uint32From(i uint32) Uint32 {
-	return NewUint32(i, true)
+	return NewUint32(i, true, true)
 }
 
 // Uint32FromPtr creates a new Uint32 that be null if i is nil.
 func Uint32FromPtr(i *uint32) Uint32 {
 	if i == nil {
-		return NewUint32(0, false)
+		return NewUint32(0, false, true)
 	}
-	return NewUint32(*i, true)
+	return NewUint32(*i, true, true)
+}
+
+func (u Uint32) IsSet() bool {
+	return u.set
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
 func (u *Uint32) UnmarshalJSON(data []byte) error {
+	u.set = true
 	if bytes.Equal(data, NullBytes) {
 		u.Valid = false
 		u.Uint32 = 0

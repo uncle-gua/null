@@ -15,31 +15,38 @@ import (
 type Int16 struct {
 	Int16 int16
 	Valid bool
+	set   bool
 }
 
 // NewInt16 creates a new Int16
-func NewInt16(i int16, valid bool) Int16 {
+func NewInt16(i int16, valid, set bool) Int16 {
 	return Int16{
 		Int16: i,
 		Valid: valid,
+		set:   set,
 	}
 }
 
 // Int16From creates a new Int16 that will always be valid.
 func Int16From(i int16) Int16 {
-	return NewInt16(i, true)
+	return NewInt16(i, true, true)
 }
 
 // Int16FromPtr creates a new Int16 that be null if i is nil.
 func Int16FromPtr(i *int16) Int16 {
 	if i == nil {
-		return NewInt16(0, false)
+		return NewInt16(0, false, true)
 	}
-	return NewInt16(*i, true)
+	return NewInt16(*i, true, true)
+}
+
+func (i Int16) IsSet() bool {
+	return i.set
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
 func (i *Int16) UnmarshalJSON(data []byte) error {
+	i.set = true
 	if bytes.Equal(data, NullBytes) {
 		i.Valid = false
 		i.Int16 = 0

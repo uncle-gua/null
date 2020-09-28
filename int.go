@@ -14,31 +14,39 @@ import (
 type Int struct {
 	Int   int
 	Valid bool
+	set   bool
 }
 
 // NewInt creates a new Int
-func NewInt(i int, valid bool) Int {
+func NewInt(i int, valid, set bool) Int {
 	return Int{
 		Int:   i,
 		Valid: valid,
+		set:   set,
 	}
 }
 
 // IntFrom creates a new Int that will always be valid.
 func IntFrom(i int) Int {
-	return NewInt(i, true)
+	return NewInt(i, true, true)
 }
 
 // IntFromPtr creates a new Int that be null if i is nil.
 func IntFromPtr(i *int) Int {
 	if i == nil {
-		return NewInt(0, false)
+		return NewInt(0, false, true)
 	}
-	return NewInt(*i, true)
+	return NewInt(*i, true, true)
+}
+
+func (i Int) IsSet() bool {
+	return i.set
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
 func (i *Int) UnmarshalJSON(data []byte) error {
+	i.set = true
+
 	if bytes.Equal(data, NullBytes) {
 		i.Valid = false
 		i.Int = 0

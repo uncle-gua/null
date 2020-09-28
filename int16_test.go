@@ -41,6 +41,9 @@ func TestUnmarshalInt16(t *testing.T) {
 	err = json.Unmarshal(nullJSON, &null)
 	maybePanic(err)
 	assertNullInt16(t, null, "null json")
+	if !null.set {
+		t.Error("should be set")
+	}
 
 	var badType Int16
 	err = json.Unmarshal(boolJSON, &badType)
@@ -99,7 +102,7 @@ func TestMarshalInt16(t *testing.T) {
 	assertJSONEquals(t, data, "32766", "non-empty json marshal")
 
 	// invalid values should be encoded as null
-	null := NewInt16(0, false)
+	null := NewInt16(0, false, true)
 	data, err = json.Marshal(null)
 	maybePanic(err)
 	assertJSONEquals(t, data, "null", "null json marshal")
@@ -112,7 +115,7 @@ func TestMarshalInt16Text(t *testing.T) {
 	assertJSONEquals(t, data, "32766", "non-empty text marshal")
 
 	// invalid values should be encoded as null
-	null := NewInt16(0, false)
+	null := NewInt16(0, false, true)
 	data, err = null.MarshalText()
 	maybePanic(err)
 	assertJSONEquals(t, data, "", "null text marshal")
@@ -125,7 +128,7 @@ func TestInt16Pointer(t *testing.T) {
 		t.Errorf("bad %s int16: %#v ≠ %d\n", "pointer", ptr, 32766)
 	}
 
-	null := NewInt16(0, false)
+	null := NewInt16(0, false, true)
 	ptr = null.Ptr()
 	if ptr != nil {
 		t.Errorf("bad %s int16: %#v ≠ %s\n", "nil pointer", ptr, "nil")
@@ -138,19 +141,19 @@ func TestInt16IsZero(t *testing.T) {
 		t.Errorf("IsZero() should be false")
 	}
 
-	null := NewInt16(0, false)
+	null := NewInt16(0, false, true)
 	if !null.IsZero() {
 		t.Errorf("IsZero() should be true")
 	}
 
-	zero := NewInt16(0, true)
+	zero := NewInt16(0, true, true)
 	if zero.IsZero() {
 		t.Errorf("IsZero() should be false")
 	}
 }
 
 func TestInt16SetValid(t *testing.T) {
-	change := NewInt16(0, false)
+	change := NewInt16(0, false, true)
 	assertNullInt16(t, change, "SetValid()")
 	change.SetValid(32766)
 	assertInt16(t, change, "SetValid()")

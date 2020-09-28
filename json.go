@@ -15,28 +15,34 @@ import (
 type JSON struct {
 	JSON  []byte
 	Valid bool
+	set   bool
 }
 
 // NewJSON creates a new JSON
-func NewJSON(b []byte, valid bool) JSON {
+func NewJSON(b []byte, valid, set bool) JSON {
 	return JSON{
 		JSON:  b,
 		Valid: valid,
+		set:   set,
 	}
 }
 
 // JSONFrom creates a new JSON that will be invalid if nil.
 func JSONFrom(b []byte) JSON {
-	return NewJSON(b, b != nil)
+	return NewJSON(b, b != nil, true)
 }
 
 // JSONFromPtr creates a new JSON that will be invalid if nil.
 func JSONFromPtr(b *[]byte) JSON {
 	if b == nil {
-		return NewJSON(nil, false)
+		return NewJSON(nil, false, true)
 	}
-	n := NewJSON(*b, true)
+	n := NewJSON(*b, true, true)
 	return n
+}
+
+func (j JSON) IsSet() bool {
+	return j.set
 }
 
 // Unmarshal will unmarshal your JSON stored in
@@ -60,6 +66,7 @@ func (j JSON) Unmarshal(dest interface{}) error {
 
 // UnmarshalJSON implements json.Unmarshaler.
 func (j *JSON) UnmarshalJSON(data []byte) error {
+	j.set = true
 	if data == nil {
 		return fmt.Errorf("json: cannot unmarshal nil into Go value of type null.JSON")
 	}

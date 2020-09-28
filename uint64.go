@@ -13,31 +13,38 @@ import (
 type Uint64 struct {
 	Uint64 uint64
 	Valid  bool
+	set    bool
 }
 
 // NewUint64 creates a new Uint64
-func NewUint64(i uint64, valid bool) Uint64 {
+func NewUint64(i uint64, valid, set bool) Uint64 {
 	return Uint64{
 		Uint64: i,
 		Valid:  valid,
+		set:    set,
 	}
 }
 
 // Uint64From creates a new Uint64 that will always be valid.
 func Uint64From(i uint64) Uint64 {
-	return NewUint64(i, true)
+	return NewUint64(i, true, true)
 }
 
 // Uint64FromPtr creates a new Uint64 that be null if i is nil.
 func Uint64FromPtr(i *uint64) Uint64 {
 	if i == nil {
-		return NewUint64(0, false)
+		return NewUint64(0, false, true)
 	}
-	return NewUint64(*i, true)
+	return NewUint64(*i, true, true)
+}
+
+func (u Uint64) IsSet() bool {
+	return u.set
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
 func (u *Uint64) UnmarshalJSON(data []byte) error {
+	u.set = true
 	if bytes.Equal(data, NullBytes) {
 		u.Uint64 = 0
 		u.Valid = false

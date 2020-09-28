@@ -41,6 +41,9 @@ func TestUnmarshalUint32(t *testing.T) {
 	err = json.Unmarshal(nullJSON, &null)
 	maybePanic(err)
 	assertNullUint32(t, null, "null json")
+	if !null.set {
+		t.Error("should be set")
+	}
 
 	var badType Uint32
 	err = json.Unmarshal(boolJSON, &badType)
@@ -100,7 +103,7 @@ func TestMarshalUint32(t *testing.T) {
 	assertJSONEquals(t, data, "4294967294", "non-empty json marshal")
 
 	// invalid values should be encoded as null
-	null := NewUint32(0, false)
+	null := NewUint32(0, false, true)
 	data, err = json.Marshal(null)
 	maybePanic(err)
 	assertJSONEquals(t, data, "null", "null json marshal")
@@ -113,7 +116,7 @@ func TestMarshalUint32Text(t *testing.T) {
 	assertJSONEquals(t, data, "4294967294", "non-empty text marshal")
 
 	// invalid values should be encoded as null
-	null := NewUint32(0, false)
+	null := NewUint32(0, false, true)
 	data, err = null.MarshalText()
 	maybePanic(err)
 	assertJSONEquals(t, data, "", "null text marshal")
@@ -126,7 +129,7 @@ func TestUint32Pointer(t *testing.T) {
 		t.Errorf("bad %s uint32: %#v ≠ %d\n", "pointer", ptr, 4294967294)
 	}
 
-	null := NewUint32(0, false)
+	null := NewUint32(0, false, true)
 	ptr = null.Ptr()
 	if ptr != nil {
 		t.Errorf("bad %s uint32: %#v ≠ %s\n", "nil pointer", ptr, "nil")
@@ -139,19 +142,19 @@ func TestUint32IsZero(t *testing.T) {
 		t.Errorf("IsZero() should be false")
 	}
 
-	null := NewUint32(0, false)
+	null := NewUint32(0, false, true)
 	if !null.IsZero() {
 		t.Errorf("IsZero() should be true")
 	}
 
-	zero := NewUint32(0, true)
+	zero := NewUint32(0, true, true)
 	if zero.IsZero() {
 		t.Errorf("IsZero() should be false")
 	}
 }
 
 func TestUint32SetValid(t *testing.T) {
-	change := NewUint32(0, false)
+	change := NewUint32(0, false, true)
 	assertNullUint32(t, change, "SetValid()")
 	change.SetValid(4294967294)
 	assertUint32(t, change, "SetValid()")
