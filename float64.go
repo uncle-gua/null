@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"strconv"
 
-	"github.com/volatiletech/null/v8/convert"
+	"github.com/razor-1/null/v9/convert"
 )
 
 // Float64 is a nullable float64.
@@ -61,6 +61,7 @@ func (f *Float64) UnmarshalJSON(data []byte) error {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (f *Float64) UnmarshalText(text []byte) error {
+	f.set = true
 	if text == nil || len(text) == 0 {
 		f.Valid = false
 		return nil
@@ -91,6 +92,7 @@ func (f Float64) MarshalText() ([]byte, error) {
 func (f *Float64) SetValid(n float64) {
 	f.Float64 = n
 	f.Valid = true
+	f.set = true
 }
 
 // Ptr returns a pointer to this Float64's value, or a nil pointer if this Float64 is null.
@@ -108,6 +110,7 @@ func (f Float64) IsZero() bool {
 
 // Scan implements the Scanner interface.
 func (f *Float64) Scan(value interface{}) error {
+	f.set = true
 	if value == nil {
 		f.Float64, f.Valid = 0, false
 		return nil

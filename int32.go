@@ -8,7 +8,7 @@ import (
 	"math"
 	"strconv"
 
-	"github.com/volatiletech/null/v8/convert"
+	"github.com/razor-1/null/v9/convert"
 	"github.com/volatiletech/randomize"
 )
 
@@ -70,6 +70,7 @@ func (i *Int32) UnmarshalJSON(data []byte) error {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (i *Int32) UnmarshalText(text []byte) error {
+	i.set = true
 	if text == nil || len(text) == 0 {
 		i.Valid = false
 		return nil
@@ -103,6 +104,7 @@ func (i Int32) MarshalText() ([]byte, error) {
 func (i *Int32) SetValid(n int32) {
 	i.Int32 = n
 	i.Valid = true
+	i.set = true
 }
 
 // Ptr returns a pointer to this Int32's value, or a nil pointer if this Int32 is null.
@@ -120,6 +122,7 @@ func (i Int32) IsZero() bool {
 
 // Scan implements the Scanner interface.
 func (i *Int32) Scan(value interface{}) error {
+	i.set = true
 	if value == nil {
 		i.Int32, i.Valid = 0, false
 		return nil

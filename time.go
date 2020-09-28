@@ -77,6 +77,7 @@ func (t Time) MarshalText() ([]byte, error) {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (t *Time) UnmarshalText(text []byte) error {
+	t.set = true
 	if text == nil || len(text) == 0 {
 		t.Valid = false
 		return nil
@@ -92,6 +93,7 @@ func (t *Time) UnmarshalText(text []byte) error {
 func (t *Time) SetValid(v time.Time) {
 	t.Time = v
 	t.Valid = true
+	t.set = true
 }
 
 // Ptr returns a pointer to this Time's value, or a nil pointer if this Time is null.
@@ -109,6 +111,7 @@ func (t Time) IsZero() bool {
 
 // Scan implements the Scanner interface.
 func (t *Time) Scan(value interface{}) error {
+	t.set = true
 	var err error
 	switch x := value.(type) {
 	case time.Time:

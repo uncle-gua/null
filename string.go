@@ -5,7 +5,7 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 
-	"github.com/volatiletech/null/v8/convert"
+	"github.com/razor-1/null/v9/convert"
 	"github.com/volatiletech/randomize"
 )
 
@@ -77,6 +77,7 @@ func (s String) MarshalText() ([]byte, error) {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (s *String) UnmarshalText(text []byte) error {
+	s.set = true
 	if text == nil || len(text) == 0 {
 		s.Valid = false
 		return nil
@@ -91,6 +92,7 @@ func (s *String) UnmarshalText(text []byte) error {
 func (s *String) SetValid(v string) {
 	s.String = v
 	s.Valid = true
+	s.set = true
 }
 
 // Ptr returns a pointer to this String's value, or a nil pointer if this String is null.
@@ -108,6 +110,7 @@ func (s String) IsZero() bool {
 
 // Scan implements the Scanner interface.
 func (s *String) Scan(value interface{}) error {
+	s.set = true
 	if value == nil {
 		s.String, s.Valid = "", false
 		return nil

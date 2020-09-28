@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/volatiletech/null/v8/convert"
+	"github.com/razor-1/null/v9/convert"
 )
 
 // Bool is a nullable bool.
@@ -62,6 +62,7 @@ func (b *Bool) UnmarshalJSON(data []byte) error {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (b *Bool) UnmarshalText(text []byte) error {
+	b.set = true
 	if text == nil || len(text) == 0 {
 		b.Valid = false
 		return nil
@@ -107,6 +108,7 @@ func (b Bool) MarshalText() ([]byte, error) {
 func (b *Bool) SetValid(v bool) {
 	b.Bool = v
 	b.Valid = true
+	b.set = true
 }
 
 // Ptr returns a pointer to this Bool's value, or a nil pointer if this Bool is null.
@@ -124,6 +126,7 @@ func (b Bool) IsZero() bool {
 
 // Scan implements the Scanner interface.
 func (b *Bool) Scan(value interface{}) error {
+	b.set = true
 	if value == nil {
 		b.Bool, b.Valid = false, false
 		return nil

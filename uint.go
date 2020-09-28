@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"strconv"
 
-	"github.com/volatiletech/null/v8/convert"
+	"github.com/razor-1/null/v9/convert"
 )
 
 // Uint is an nullable uint.
@@ -63,6 +63,7 @@ func (u *Uint) UnmarshalJSON(data []byte) error {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (u *Uint) UnmarshalText(text []byte) error {
+	u.set = true
 	if text == nil || len(text) == 0 {
 		u.Valid = false
 		return nil
@@ -96,6 +97,7 @@ func (u Uint) MarshalText() ([]byte, error) {
 func (u *Uint) SetValid(n uint) {
 	u.Uint = n
 	u.Valid = true
+	u.set = true
 }
 
 // Ptr returns a pointer to this Uint's value, or a nil pointer if this Uint is null.
@@ -113,6 +115,7 @@ func (u Uint) IsZero() bool {
 
 // Scan implements the Scanner interface.
 func (u *Uint) Scan(value interface{}) error {
+	u.set = true
 	if value == nil {
 		u.Uint, u.Valid = 0, false
 		return nil

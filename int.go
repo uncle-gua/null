@@ -7,7 +7,7 @@ import (
 	"math"
 	"strconv"
 
-	"github.com/volatiletech/null/v8/convert"
+	"github.com/razor-1/null/v9/convert"
 )
 
 // Int is an nullable int.
@@ -65,6 +65,7 @@ func (i *Int) UnmarshalJSON(data []byte) error {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (i *Int) UnmarshalText(text []byte) error {
+	i.set = true
 	if text == nil || len(text) == 0 {
 		i.Valid = false
 		return nil
@@ -98,6 +99,7 @@ func (i Int) MarshalText() ([]byte, error) {
 func (i *Int) SetValid(n int) {
 	i.Int = n
 	i.Valid = true
+	i.set = true
 }
 
 // Ptr returns a pointer to this Int's value, or a nil pointer if this Int is null.
@@ -115,6 +117,7 @@ func (i Int) IsZero() bool {
 
 // Scan implements the Scanner interface.
 func (i *Int) Scan(value interface{}) error {
+	i.set = true
 	if value == nil {
 		i.Int, i.Valid = 0, false
 		return nil

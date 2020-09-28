@@ -66,6 +66,7 @@ func (b *Byte) UnmarshalJSON(data []byte) error {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (b *Byte) UnmarshalText(text []byte) error {
+	b.set = true
 	if text == nil || len(text) == 0 {
 		b.Valid = false
 		return nil
@@ -100,6 +101,7 @@ func (b Byte) MarshalText() ([]byte, error) {
 func (b *Byte) SetValid(n byte) {
 	b.Byte = n
 	b.Valid = true
+	b.set = true
 }
 
 // Ptr returns a pointer to this Byte's value, or a nil pointer if this Byte is null.
@@ -117,6 +119,7 @@ func (b Byte) IsZero() bool {
 
 // Scan implements the Scanner interface.
 func (b *Byte) Scan(value interface{}) error {
+	b.set = true
 	if value == nil {
 		b.Byte, b.Valid = 0, false
 		return nil

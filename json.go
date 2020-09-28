@@ -7,7 +7,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/volatiletech/null/v8/convert"
+	"github.com/razor-1/null/v9/convert"
 	"github.com/volatiletech/randomize"
 )
 
@@ -86,6 +86,7 @@ func (j *JSON) UnmarshalJSON(data []byte) error {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (j *JSON) UnmarshalText(text []byte) error {
+	j.set = true
 	if text == nil || len(text) == 0 {
 		j.JSON = nil
 		j.Valid = false
@@ -131,6 +132,7 @@ func (j JSON) MarshalText() ([]byte, error) {
 func (j *JSON) SetValid(n []byte) {
 	j.JSON = n
 	j.Valid = true
+	j.set = true
 }
 
 // Ptr returns a pointer to this JSON's value, or a nil pointer if this JSON is null.
@@ -148,6 +150,7 @@ func (j JSON) IsZero() bool {
 
 // Scan implements the Scanner interface.
 func (j *JSON) Scan(value interface{}) error {
+	j.set = true
 	if value == nil {
 		j.JSON, j.Valid = []byte{}, false
 		return nil
