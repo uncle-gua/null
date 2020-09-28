@@ -110,12 +110,11 @@ func (s String) IsZero() bool {
 
 // Scan implements the Scanner interface.
 func (s *String) Scan(value interface{}) error {
-	s.set = true
 	if value == nil {
-		s.String, s.Valid = "", false
+		s.String, s.Valid, s.set = "", false, false
 		return nil
 	}
-	s.Valid = true
+	s.Valid, s.set = true, true
 	return convert.ConvertAssign(&s.String, value)
 }
 

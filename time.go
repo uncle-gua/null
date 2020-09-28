@@ -111,18 +111,19 @@ func (t Time) IsZero() bool {
 
 // Scan implements the Scanner interface.
 func (t *Time) Scan(value interface{}) error {
-	t.set = true
 	var err error
 	switch x := value.(type) {
 	case time.Time:
 		t.Time = x
 	case nil:
-		t.Valid = false
+		t.Valid, t.set = false, false
 		return nil
 	default:
 		err = fmt.Errorf("null: cannot scan type %T into null.Time: %v", value, value)
 	}
-	t.Valid = err == nil
+	if err == nil {
+		t.Valid, t.set = true, true
+	}
 	return err
 }
 

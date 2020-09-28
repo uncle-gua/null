@@ -48,8 +48,7 @@ func (i Int16) IsSet() bool {
 func (i *Int16) UnmarshalJSON(data []byte) error {
 	i.set = true
 	if bytes.Equal(data, NullBytes) {
-		i.Valid = false
-		i.Int16 = 0
+		i.Int16, i.Valid = 0, false
 		return nil
 	}
 
@@ -62,8 +61,7 @@ func (i *Int16) UnmarshalJSON(data []byte) error {
 		return fmt.Errorf("json: %d overflows max int16 value", x)
 	}
 
-	i.Int16 = int16(x)
-	i.Valid = true
+	i.Int16, i.Valid = int16(x), true
 	return nil
 }
 
@@ -121,12 +119,11 @@ func (i Int16) IsZero() bool {
 
 // Scan implements the Scanner interface.
 func (i *Int16) Scan(value interface{}) error {
-	i.set = true
 	if value == nil {
-		i.Int16, i.Valid = 0, false
+		i.Int16, i.Valid, i.set = 0, false, false
 		return nil
 	}
-	i.Valid = true
+	i.Valid, i.set = true, true
 	return convert.ConvertAssign(&i.Int16, value)
 }
 

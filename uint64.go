@@ -113,12 +113,11 @@ func (u Uint64) IsZero() bool {
 
 // Scan implements the Scanner interface.
 func (u *Uint64) Scan(value interface{}) error {
-	u.set = true
 	if value == nil {
-		u.Uint64, u.Valid = 0, false
+		u.Uint64, u.Valid, u.set = 0, false, false
 		return nil
 	}
-	u.Valid = true
+	u.Valid, u.set = true, true
 	return convert.ConvertAssign(&u.Uint64, value)
 }
 
