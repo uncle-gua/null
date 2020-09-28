@@ -1,4 +1,4 @@
-module github.com/volatiletech/null/v8
+module github.com/razor-1/null/v9
 
 go 1.14
 
