@@ -5,7 +5,7 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 
-	"github.com/volatiletech/null/v8/convert"
+	"github.com/razor-1/null/v9/convert"
 )
 
 // NullBytes is a global byte slice of JSON null
@@ -67,6 +67,7 @@ func (b *Bytes) UnmarshalJSON(data []byte) error {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (b *Bytes) UnmarshalText(text []byte) error {
+	b.set = true
 	if len(text) == 0 {
 		b.Bytes = nil
 		b.Valid = false
@@ -98,6 +99,7 @@ func (b Bytes) MarshalText() ([]byte, error) {
 func (b *Bytes) SetValid(n []byte) {
 	b.Bytes = n
 	b.Valid = true
+	b.set = true
 }
 
 // Ptr returns a pointer to this Bytes's value, or a nil pointer if this Bytes is null.
@@ -115,6 +117,7 @@ func (b Bytes) IsZero() bool {
 
 // Scan implements the Scanner interface.
 func (b *Bytes) Scan(value interface{}) error {
+	b.set = true
 	if value == nil {
 		b.Bytes, b.Valid = []byte{}, false
 		return nil

@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"strconv"
 
-	"github.com/volatiletech/null/v8/convert"
+	"github.com/razor-1/null/v9/convert"
 )
 
 // Float32 is a nullable float32.
@@ -63,6 +63,7 @@ func (f *Float32) UnmarshalJSON(data []byte) error {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (f *Float32) UnmarshalText(text []byte) error {
+	f.set = true
 	if text == nil || len(text) == 0 {
 		f.Valid = false
 		return nil
@@ -96,6 +97,7 @@ func (f Float32) MarshalText() ([]byte, error) {
 func (f *Float32) SetValid(n float32) {
 	f.Float32 = n
 	f.Valid = true
+	f.set = true
 }
 
 // Ptr returns a pointer to this Float32's value, or a nil pointer if this Float32 is null.
@@ -113,6 +115,7 @@ func (f Float32) IsZero() bool {
 
 // Scan implements the Scanner interface.
 func (f *Float32) Scan(value interface{}) error {
+	f.set = true
 	if value == nil {
 		f.Float32, f.Valid = 0, false
 		return nil

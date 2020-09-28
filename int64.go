@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"strconv"
 
-	"github.com/volatiletech/null/v8/convert"
+	"github.com/razor-1/null/v9/convert"
 )
 
 // Int64 is an nullable int64.
@@ -61,6 +61,7 @@ func (i *Int64) UnmarshalJSON(data []byte) error {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (i *Int64) UnmarshalText(text []byte) error {
+	i.set = true
 	if text == nil || len(text) == 0 {
 		i.Valid = false
 		return nil
@@ -91,6 +92,7 @@ func (i Int64) MarshalText() ([]byte, error) {
 func (i *Int64) SetValid(n int64) {
 	i.Int64 = n
 	i.Valid = true
+	i.set = true
 }
 
 // Ptr returns a pointer to this Int64's value, or a nil pointer if this Int64 is null.
@@ -108,6 +110,7 @@ func (i Int64) IsZero() bool {
 
 // Scan implements the Scanner interface.
 func (i *Int64) Scan(value interface{}) error {
+	i.set = true
 	if value == nil {
 		i.Int64, i.Valid = 0, false
 		return nil

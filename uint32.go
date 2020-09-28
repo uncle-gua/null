@@ -8,7 +8,7 @@ import (
 	"math"
 	"strconv"
 
-	"github.com/volatiletech/null/v8/convert"
+	"github.com/razor-1/null/v9/convert"
 )
 
 // Uint32 is an nullable uint32.
@@ -69,6 +69,7 @@ func (u *Uint32) UnmarshalJSON(data []byte) error {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (u *Uint32) UnmarshalText(text []byte) error {
+	u.set = true
 	if text == nil || len(text) == 0 {
 		u.Valid = false
 		return nil
@@ -102,6 +103,7 @@ func (u Uint32) MarshalText() ([]byte, error) {
 func (u *Uint32) SetValid(n uint32) {
 	u.Uint32 = n
 	u.Valid = true
+	u.set = true
 }
 
 // Ptr returns a pointer to this Uint32's value, or a nil pointer if this Uint32 is null.
@@ -119,6 +121,7 @@ func (u Uint32) IsZero() bool {
 
 // Scan implements the Scanner interface.
 func (u *Uint32) Scan(value interface{}) error {
+	u.set = true
 	if value == nil {
 		u.Uint32, u.Valid = 0, false
 		return nil
