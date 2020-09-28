@@ -13,31 +13,38 @@ import (
 type Uint struct {
 	Uint  uint
 	Valid bool
+	set   bool
 }
 
 // NewUint creates a new Uint
-func NewUint(i uint, valid bool) Uint {
+func NewUint(i uint, valid, set bool) Uint {
 	return Uint{
 		Uint:  i,
 		Valid: valid,
+		set:   set,
 	}
 }
 
 // UintFrom creates a new Uint that will always be valid.
 func UintFrom(i uint) Uint {
-	return NewUint(i, true)
+	return NewUint(i, true, true)
 }
 
 // UintFromPtr creates a new Uint that be null if i is nil.
 func UintFromPtr(i *uint) Uint {
 	if i == nil {
-		return NewUint(0, false)
+		return NewUint(0, false, true)
 	}
-	return NewUint(*i, true)
+	return NewUint(*i, true, true)
+}
+
+func (u Uint) IsSet() bool {
+	return u.set
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
 func (u *Uint) UnmarshalJSON(data []byte) error {
+	u.set = true
 	if bytes.Equal(data, NullBytes) {
 		u.Valid = false
 		u.Uint = 0

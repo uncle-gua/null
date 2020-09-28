@@ -40,6 +40,9 @@ func TestUnmarshalBool(t *testing.T) {
 	err = json.Unmarshal(nullJSON, &null)
 	maybePanic(err)
 	assertNullBool(t, null, "null json")
+	if !null.set {
+		t.Error("should be set", err)
+	}
 
 	var badType Bool
 	err = json.Unmarshal(intJSON, &badType)
@@ -85,13 +88,13 @@ func TestMarshalBool(t *testing.T) {
 	maybePanic(err)
 	assertJSONEquals(t, data, "true", "non-empty json marshal")
 
-	zero := NewBool(false, true)
+	zero := NewBool(false, true, true)
 	data, err = json.Marshal(zero)
 	maybePanic(err)
 	assertJSONEquals(t, data, "false", "zero json marshal")
 
 	// invalid values should be encoded as null
-	null := NewBool(false, false)
+	null := NewBool(false, false, true)
 	data, err = json.Marshal(null)
 	maybePanic(err)
 	assertJSONEquals(t, data, "null", "null json marshal")
@@ -103,13 +106,13 @@ func TestMarshalBoolText(t *testing.T) {
 	maybePanic(err)
 	assertJSONEquals(t, data, "true", "non-empty text marshal")
 
-	zero := NewBool(false, true)
+	zero := NewBool(false, true, true)
 	data, err = zero.MarshalText()
 	maybePanic(err)
 	assertJSONEquals(t, data, "false", "zero text marshal")
 
 	// invalid values should be encoded as null
-	null := NewBool(false, false)
+	null := NewBool(false, false, true)
 	data, err = null.MarshalText()
 	maybePanic(err)
 	assertJSONEquals(t, data, "", "null text marshal")
@@ -122,7 +125,7 @@ func TestBoolPointer(t *testing.T) {
 		t.Errorf("bad %s bool: %#v ≠ %v\n", "pointer", ptr, true)
 	}
 
-	null := NewBool(false, false)
+	null := NewBool(false, false, true)
 	ptr = null.Ptr()
 	if ptr != nil {
 		t.Errorf("bad %s bool: %#v ≠ %s\n", "nil pointer", ptr, "nil")
@@ -135,19 +138,19 @@ func TestBoolIsZero(t *testing.T) {
 		t.Errorf("IsZero() should be false")
 	}
 
-	null := NewBool(false, false)
+	null := NewBool(false, false, true)
 	if !null.IsZero() {
 		t.Errorf("IsZero() should be true")
 	}
 
-	zero := NewBool(false, true)
+	zero := NewBool(false, true, true)
 	if zero.IsZero() {
 		t.Errorf("IsZero() should be false")
 	}
 }
 
 func TestBoolSetValid(t *testing.T) {
-	change := NewBool(false, false)
+	change := NewBool(false, false, true)
 	assertNullBool(t, change, "SetValid()")
 	change.SetValid(true)
 	assertBool(t, change, "SetValid()")

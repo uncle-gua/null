@@ -13,31 +13,38 @@ import (
 type String struct {
 	String string
 	Valid  bool
+	set    bool
 }
 
 // StringFrom creates a new String that will never be blank.
 func StringFrom(s string) String {
-	return NewString(s, true)
+	return NewString(s, true, true)
 }
 
 // StringFromPtr creates a new String that be null if s is nil.
 func StringFromPtr(s *string) String {
 	if s == nil {
-		return NewString("", false)
+		return NewString("", false, true)
 	}
-	return NewString(*s, true)
+	return NewString(*s, true, true)
 }
 
 // NewString creates a new String
-func NewString(s string, valid bool) String {
+func NewString(s string, valid, set bool) String {
 	return String{
 		String: s,
 		Valid:  valid,
+		set:    set,
 	}
+}
+
+func (s String) IsSet() bool {
+	return s.set
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
 func (s *String) UnmarshalJSON(data []byte) error {
+	s.set = true
 	if bytes.Equal(data, NullBytes) {
 		s.String = ""
 		s.Valid = false

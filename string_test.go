@@ -54,6 +54,9 @@ func TestUnmarshalString(t *testing.T) {
 	err = json.Unmarshal(nullJSON, &null)
 	maybePanic(err)
 	assertNullStr(t, null, "null json")
+	if !null.set {
+		t.Error("should be set")
+	}
 
 	var badType String
 	err = json.Unmarshal(boolJSON, &badType)
@@ -124,7 +127,7 @@ func TestStringPointer(t *testing.T) {
 		t.Errorf("bad %s string: %#v ≠ %s\n", "pointer", ptr, "test")
 	}
 
-	null := NewString("", false)
+	null := NewString("", false, true)
 	ptr = null.Ptr()
 	if ptr != nil {
 		t.Errorf("bad %s string: %#v ≠ %s\n", "nil pointer", ptr, "nil")
@@ -142,7 +145,7 @@ func TestStringIsZero(t *testing.T) {
 		t.Errorf("IsZero() should be false")
 	}
 
-	empty := NewString("", true)
+	empty := NewString("", true, true)
 	if empty.IsZero() {
 		t.Errorf("IsZero() should be false")
 	}
@@ -154,7 +157,7 @@ func TestStringIsZero(t *testing.T) {
 }
 
 func TestStringSetValid(t *testing.T) {
-	change := NewString("", false)
+	change := NewString("", false, true)
 	assertNullStr(t, change, "SetValid()")
 	change.SetValid("test")
 	assertStr(t, change, "SetValid()")

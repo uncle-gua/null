@@ -15,31 +15,38 @@ import (
 type Int8 struct {
 	Int8  int8
 	Valid bool
+	set   bool
 }
 
 // NewInt8 creates a new Int8
-func NewInt8(i int8, valid bool) Int8 {
+func NewInt8(i int8, valid, set bool) Int8 {
 	return Int8{
 		Int8:  i,
 		Valid: valid,
+		set:   set,
 	}
 }
 
 // Int8From creates a new Int8 that will always be valid.
 func Int8From(i int8) Int8 {
-	return NewInt8(i, true)
+	return NewInt8(i, true, true)
 }
 
 // Int8FromPtr creates a new Int8 that be null if i is nil.
 func Int8FromPtr(i *int8) Int8 {
 	if i == nil {
-		return NewInt8(0, false)
+		return NewInt8(0, false, true)
 	}
-	return NewInt8(*i, true)
+	return NewInt8(*i, true, true)
+}
+
+func (i Int8) IsSet() bool {
+	return i.set
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
 func (i *Int8) UnmarshalJSON(data []byte) error {
+	i.set = true
 	if bytes.Equal(data, NullBytes) {
 		i.Valid = false
 		i.Int8 = 0

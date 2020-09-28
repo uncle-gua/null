@@ -13,27 +13,33 @@ import (
 type Time struct {
 	Time  time.Time
 	Valid bool
+	set   bool
 }
 
 // NewTime creates a new Time.
-func NewTime(t time.Time, valid bool) Time {
+func NewTime(t time.Time, valid, set bool) Time {
 	return Time{
 		Time:  t,
 		Valid: valid,
+		set:   set,
 	}
 }
 
 // TimeFrom creates a new Time that will always be valid.
 func TimeFrom(t time.Time) Time {
-	return NewTime(t, true)
+	return NewTime(t, true, true)
 }
 
 // TimeFromPtr creates a new Time that will be null if t is nil.
 func TimeFromPtr(t *time.Time) Time {
 	if t == nil {
-		return NewTime(time.Time{}, false)
+		return NewTime(time.Time{}, false, true)
 	}
-	return NewTime(*t, true)
+	return NewTime(*t, true, true)
+}
+
+func (t Time) IsSet() bool {
+	return t.set
 }
 
 // MarshalJSON implements json.Marshaler.
@@ -46,6 +52,7 @@ func (t Time) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements json.Unmarshaler.
 func (t *Time) UnmarshalJSON(data []byte) error {
+	t.set = true
 	if bytes.Equal(data, NullBytes) {
 		t.Valid = false
 		t.Time = time.Time{}

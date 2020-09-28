@@ -126,6 +126,9 @@ func TestUnmarshalJSON(t *testing.T) {
 	if !bytes.Equal(null.JSON, nil) {
 		t.Errorf("Expected JSON to be []byte nil, but was not: %#v %#v", null.JSON, []byte(nil))
 	}
+	if !null.set {
+		t.Error("should be set")
+	}
 }
 
 func TestTextUnmarshalJSON(t *testing.T) {
@@ -147,7 +150,7 @@ func TestMarshalJSON(t *testing.T) {
 	assertJSONEquals(t, data, `"hello"`, "non-empty json marshal")
 
 	// invalid values should be encoded as null
-	null := NewJSON(nil, false)
+	null := NewJSON(nil, false, true)
 	data, err = json.Marshal(null)
 	maybePanic(err)
 	assertJSONEquals(t, data, "null", "null json marshal")
@@ -160,7 +163,7 @@ func TestMarshalJSONText(t *testing.T) {
 	assertJSONEquals(t, data, `"hello"`, "non-empty text marshal")
 
 	// invalid values should be encoded as null
-	null := NewJSON(nil, false)
+	null := NewJSON(nil, false, true)
 	data, err = null.MarshalText()
 	maybePanic(err)
 	assertJSONEquals(t, data, "", "null text marshal")
@@ -173,7 +176,7 @@ func TestJSONPointer(t *testing.T) {
 		t.Errorf("bad %s []byte: %#v ≠ %s\n", "pointer", ptr, `"hello"`)
 	}
 
-	null := NewJSON(nil, false)
+	null := NewJSON(nil, false, true)
 	ptr = null.Ptr()
 	if ptr != nil {
 		t.Errorf("bad %s []byte: %#v ≠ %s\n", "nil pointer", ptr, "nil")
@@ -186,19 +189,19 @@ func TestJSONIsZero(t *testing.T) {
 		t.Errorf("IsZero() should be false")
 	}
 
-	null := NewJSON(nil, false)
+	null := NewJSON(nil, false, true)
 	if !null.IsZero() {
 		t.Errorf("IsZero() should be true")
 	}
 
-	zero := NewJSON(nil, true)
+	zero := NewJSON(nil, true, true)
 	if zero.IsZero() {
 		t.Errorf("IsZero() should be false")
 	}
 }
 
 func TestJSONSetValid(t *testing.T) {
-	change := NewJSON(nil, false)
+	change := NewJSON(nil, false, true)
 	assertNullJSON(t, change, "SetValid()")
 	change.SetValid([]byte(`"hello"`))
 	assertJSON(t, change, "SetValid()")

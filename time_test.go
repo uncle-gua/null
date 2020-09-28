@@ -24,6 +24,9 @@ func TestUnmarshalTimeJSON(t *testing.T) {
 	err = json.Unmarshal(nullTimeJSON, &null)
 	maybePanic(err)
 	assertNullTime(t, null, "null time json")
+	if !null.set {
+		t.Error("should be set")
+	}
 
 	var invalid Time
 	err = invalid.UnmarshalJSON(invalidJSON)
@@ -93,7 +96,7 @@ func TestTimeFromPtr(t *testing.T) {
 
 func TestTimeSetValid(t *testing.T) {
 	var ti time.Time
-	change := NewTime(ti, false)
+	change := NewTime(ti, false, true)
 	assertNullTime(t, change, "SetValid()")
 	change.SetValid(timeValue)
 	assertTime(t, change, "SetValid()")
@@ -107,7 +110,7 @@ func TestTimePointer(t *testing.T) {
 	}
 
 	var nt time.Time
-	null := NewTime(nt, false)
+	null := NewTime(nt, false, true)
 	ptr = null.Ptr()
 	if ptr != nil {
 		t.Errorf("bad %s time: %#v ≠ %s\n", "nil pointer", ptr, "nil")

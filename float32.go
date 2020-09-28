@@ -13,31 +13,38 @@ import (
 type Float32 struct {
 	Float32 float32
 	Valid   bool
+	set     bool
 }
 
 // NewFloat32 creates a new Float32
-func NewFloat32(f float32, valid bool) Float32 {
+func NewFloat32(f float32, valid, set bool) Float32 {
 	return Float32{
 		Float32: f,
 		Valid:   valid,
+		set:     set,
 	}
 }
 
 // Float32From creates a new Float32 that will always be valid.
 func Float32From(f float32) Float32 {
-	return NewFloat32(f, true)
+	return NewFloat32(f, true, true)
 }
 
 // Float32FromPtr creates a new Float32 that be null if f is nil.
 func Float32FromPtr(f *float32) Float32 {
 	if f == nil {
-		return NewFloat32(0, false)
+		return NewFloat32(0, false, true)
 	}
-	return NewFloat32(*f, true)
+	return NewFloat32(*f, true, true)
+}
+
+func (f Float32) IsSet() bool {
+	return f.set
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
 func (f *Float32) UnmarshalJSON(data []byte) error {
+	f.set = true
 	if bytes.Equal(data, NullBytes) {
 		f.Valid = false
 		f.Float32 = 0

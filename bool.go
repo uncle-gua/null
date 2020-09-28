@@ -13,31 +13,39 @@ import (
 type Bool struct {
 	Bool  bool
 	Valid bool
+	set   bool
 }
 
 // NewBool creates a new Bool
-func NewBool(b bool, valid bool) Bool {
+func NewBool(b bool, valid, set bool) Bool {
 	return Bool{
 		Bool:  b,
 		Valid: valid,
+		set:   set,
 	}
 }
 
 // BoolFrom creates a new Bool that will always be valid.
 func BoolFrom(b bool) Bool {
-	return NewBool(b, true)
+	return NewBool(b, true, true)
 }
 
 // BoolFromPtr creates a new Bool that will be null if f is nil.
 func BoolFromPtr(b *bool) Bool {
 	if b == nil {
-		return NewBool(false, false)
+		return NewBool(false, false, true)
 	}
-	return NewBool(*b, true)
+	return NewBool(*b, true, true)
+}
+
+func (b Bool) IsSet() bool {
+	return b.set
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
 func (b *Bool) UnmarshalJSON(data []byte) error {
+	b.set = true
+
 	if bytes.Equal(data, NullBytes) {
 		b.Bool = false
 		b.Valid = false

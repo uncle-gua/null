@@ -15,32 +15,40 @@ var NullBytes = []byte("null")
 type Bytes struct {
 	Bytes []byte
 	Valid bool
+	set   bool
 }
 
 // NewBytes creates a new Bytes
-func NewBytes(b []byte, valid bool) Bytes {
+func NewBytes(b []byte, valid, set bool) Bytes {
 	return Bytes{
 		Bytes: b,
 		Valid: valid,
+		set:   set,
 	}
 }
 
 // BytesFrom creates a new Bytes that will be invalid if nil.
 func BytesFrom(b []byte) Bytes {
-	return NewBytes(b, b != nil)
+	return NewBytes(b, b != nil, true)
 }
 
 // BytesFromPtr creates a new Bytes that will be invalid if nil.
 func BytesFromPtr(b *[]byte) Bytes {
 	if b == nil {
-		return NewBytes(nil, false)
+		return NewBytes(nil, false, true)
 	}
-	n := NewBytes(*b, true)
+	n := NewBytes(*b, true, true)
 	return n
+}
+
+func (b Bytes) IsSet() bool {
+	return b.set
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
 func (b *Bytes) UnmarshalJSON(data []byte) error {
+	b.set = true
+
 	if bytes.Equal(data, NullBytes) {
 		b.Valid = false
 		b.Bytes = nil

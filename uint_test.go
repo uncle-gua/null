@@ -39,6 +39,9 @@ func TestUnmarshalUint(t *testing.T) {
 	err = json.Unmarshal(nullJSON, &null)
 	maybePanic(err)
 	assertNullUint(t, null, "null json")
+	if !null.set {
+		t.Error("should be set")
+	}
 
 	var badType Uint
 	err = json.Unmarshal(boolJSON, &badType)
@@ -82,7 +85,7 @@ func TestMarshalUint(t *testing.T) {
 	assertJSONEquals(t, data, "12345", "non-empty json marshal")
 
 	// invalid values should be encoded as null
-	null := NewUint(0, false)
+	null := NewUint(0, false, true)
 	data, err = json.Marshal(null)
 	maybePanic(err)
 	assertJSONEquals(t, data, "null", "null json marshal")
@@ -95,7 +98,7 @@ func TestMarshalUintText(t *testing.T) {
 	assertJSONEquals(t, data, "12345", "non-empty text marshal")
 
 	// invalid values should be encoded as null
-	null := NewUint(0, false)
+	null := NewUint(0, false, true)
 	data, err = null.MarshalText()
 	maybePanic(err)
 	assertJSONEquals(t, data, "", "null text marshal")
@@ -108,7 +111,7 @@ func TestUintPointer(t *testing.T) {
 		t.Errorf("bad %s uint: %#v ≠ %d\n", "pointer", ptr, 12345)
 	}
 
-	null := NewUint(0, false)
+	null := NewUint(0, false, true)
 	ptr = null.Ptr()
 	if ptr != nil {
 		t.Errorf("bad %s uint: %#v ≠ %s\n", "nil pointer", ptr, "nil")
@@ -121,19 +124,19 @@ func TestUintIsZero(t *testing.T) {
 		t.Errorf("IsZero() should be false")
 	}
 
-	null := NewUint(0, false)
+	null := NewUint(0, false, true)
 	if !null.IsZero() {
 		t.Errorf("IsZero() should be true")
 	}
 
-	zero := NewUint(0, true)
+	zero := NewUint(0, true, true)
 	if zero.IsZero() {
 		t.Errorf("IsZero() should be false")
 	}
 }
 
 func TestUintSetValid(t *testing.T) {
-	change := NewUint(0, false)
+	change := NewUint(0, false, true)
 	assertNullUint(t, change, "SetValid()")
 	change.SetValid(12345)
 	assertUint(t, change, "SetValid()")
