@@ -127,7 +127,7 @@ func (b Bool) IsZero() bool {
 // Scan implements the Scanner interface.
 func (b *Bool) Scan(value interface{}) error {
 	if value == nil {
-		b.Bool, b.Valid, b.set = false, false, true
+		b.Bool, b.Valid, b.set = false, false, false
 		return nil
 	}
 	b.Valid, b.set = true, true
