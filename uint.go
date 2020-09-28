@@ -115,12 +115,11 @@ func (u Uint) IsZero() bool {
 
 // Scan implements the Scanner interface.
 func (u *Uint) Scan(value interface{}) error {
-	u.set = true
 	if value == nil {
-		u.Uint, u.Valid = 0, false
+		u.Uint, u.Valid, u.set = 0, false, false
 		return nil
 	}
-	u.Valid = true
+	u.Valid, u.set = true, true
 	return convert.ConvertAssign(&u.Uint, value)
 }
 

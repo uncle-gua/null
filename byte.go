@@ -119,21 +119,18 @@ func (b Byte) IsZero() bool {
 
 // Scan implements the Scanner interface.
 func (b *Byte) Scan(value interface{}) error {
-	b.set = true
 	if value == nil {
-		b.Byte, b.Valid = 0, false
+		b.Byte, b.Valid, b.set = 0, false, false
 		return nil
 	}
 
 	val := value.(string)
 	if len(val) == 0 {
-		b.Valid = false
-		b.Byte = 0
+		b.Byte, b.Valid, b.set = 0, false, false
 		return nil
 	}
 
-	b.Valid = true
-	b.Byte = byte(val[0])
+	b.Byte, b.Valid, b.set = val[0], true, true
 	return nil
 }
 

@@ -150,12 +150,11 @@ func (j JSON) IsZero() bool {
 
 // Scan implements the Scanner interface.
 func (j *JSON) Scan(value interface{}) error {
-	j.set = true
 	if value == nil {
-		j.JSON, j.Valid = []byte{}, false
+		j.JSON, j.Valid, j.set = nil, false, false
 		return nil
 	}
-	j.Valid = true
+	j.Valid, j.set = true, true
 	return convert.ConvertAssign(&j.JSON, value)
 }
 

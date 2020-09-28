@@ -122,12 +122,11 @@ func (i Int32) IsZero() bool {
 
 // Scan implements the Scanner interface.
 func (i *Int32) Scan(value interface{}) error {
-	i.set = true
 	if value == nil {
-		i.Int32, i.Valid = 0, false
+		i.Int32, i.Valid, i.set = 0, false, false
 		return nil
 	}
-	i.Valid = true
+	i.Valid, i.set = true, true
 	return convert.ConvertAssign(&i.Int32, value)
 }
 

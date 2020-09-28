@@ -110,12 +110,11 @@ func (f Float64) IsZero() bool {
 
 // Scan implements the Scanner interface.
 func (f *Float64) Scan(value interface{}) error {
-	f.set = true
 	if value == nil {
-		f.Float64, f.Valid = 0, false
+		f.Float64, f.Valid, f.set = 0, false, false
 		return nil
 	}
-	f.Valid = true
+	f.Valid, f.set = true, true
 	return convert.ConvertAssign(&f.Float64, value)
 }
 
