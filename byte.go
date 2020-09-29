@@ -11,7 +11,7 @@ import (
 type Byte struct {
 	Byte  byte
 	Valid bool
-	set   bool
+	Set   bool
 }
 
 // NewByte creates a new Byte
@@ -19,7 +19,7 @@ func NewByte(b byte, valid, set bool) Byte {
 	return Byte{
 		Byte:  b,
 		Valid: valid,
-		set:   set,
+		Set:   set,
 	}
 }
 
@@ -37,12 +37,12 @@ func ByteFromPtr(b *byte) Byte {
 }
 
 func (b Byte) IsSet() bool {
-	return b.set
+	return b.Set
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
 func (b *Byte) UnmarshalJSON(data []byte) error {
-	b.set = true
+	b.Set = true
 
 	if len(data) == 0 || bytes.Equal(data, NullBytes) {
 		b.Valid = false
@@ -66,7 +66,7 @@ func (b *Byte) UnmarshalJSON(data []byte) error {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (b *Byte) UnmarshalText(text []byte) error {
-	b.set = true
+	b.Set = true
 	if text == nil || len(text) == 0 {
 		b.Valid = false
 		return nil
@@ -101,7 +101,7 @@ func (b Byte) MarshalText() ([]byte, error) {
 func (b *Byte) SetValid(n byte) {
 	b.Byte = n
 	b.Valid = true
-	b.set = true
+	b.Set = true
 }
 
 // Ptr returns a pointer to this Byte's value, or a nil pointer if this Byte is null.
@@ -120,17 +120,17 @@ func (b Byte) IsZero() bool {
 // Scan implements the Scanner interface.
 func (b *Byte) Scan(value interface{}) error {
 	if value == nil {
-		b.Byte, b.Valid, b.set = 0, false, false
+		b.Byte, b.Valid, b.Set = 0, false, false
 		return nil
 	}
 
 	val := value.(string)
 	if len(val) == 0 {
-		b.Byte, b.Valid, b.set = 0, false, false
+		b.Byte, b.Valid, b.Set = 0, false, false
 		return nil
 	}
 
-	b.Byte, b.Valid, b.set = val[0], true, true
+	b.Byte, b.Valid, b.Set = val[0], true, true
 	return nil
 }
 

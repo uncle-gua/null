@@ -15,7 +15,7 @@ import (
 type JSON struct {
 	JSON  []byte
 	Valid bool
-	set   bool
+	Set   bool
 }
 
 // NewJSON creates a new JSON
@@ -23,7 +23,7 @@ func NewJSON(b []byte, valid, set bool) JSON {
 	return JSON{
 		JSON:  b,
 		Valid: valid,
-		set:   set,
+		Set:   set,
 	}
 }
 
@@ -42,7 +42,7 @@ func JSONFromPtr(b *[]byte) JSON {
 }
 
 func (j JSON) IsSet() bool {
-	return j.set
+	return j.Set
 }
 
 // Unmarshal will unmarshal your JSON stored in
@@ -66,7 +66,7 @@ func (j JSON) Unmarshal(dest interface{}) error {
 
 // UnmarshalJSON implements json.Unmarshaler.
 func (j *JSON) UnmarshalJSON(data []byte) error {
-	j.set = true
+	j.Set = true
 	if data == nil {
 		return fmt.Errorf("json: cannot unmarshal nil into Go value of type null.JSON")
 	}
@@ -86,7 +86,7 @@ func (j *JSON) UnmarshalJSON(data []byte) error {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (j *JSON) UnmarshalText(text []byte) error {
-	j.set = true
+	j.Set = true
 	if text == nil || len(text) == 0 {
 		j.JSON = nil
 		j.Valid = false
@@ -108,7 +108,7 @@ func (j *JSON) Marshal(obj interface{}) error {
 
 	// Call our implementation of
 	// JSON UnmarshalJSON through json.Unmarshal
-	// to set the result to the JSON object
+	// to Set the result to the JSON object
 	return json.Unmarshal(res, j)
 }
 
@@ -132,7 +132,7 @@ func (j JSON) MarshalText() ([]byte, error) {
 func (j *JSON) SetValid(n []byte) {
 	j.JSON = n
 	j.Valid = true
-	j.set = true
+	j.Set = true
 }
 
 // Ptr returns a pointer to this JSON's value, or a nil pointer if this JSON is null.
@@ -151,10 +151,10 @@ func (j JSON) IsZero() bool {
 // Scan implements the Scanner interface.
 func (j *JSON) Scan(value interface{}) error {
 	if value == nil {
-		j.JSON, j.Valid, j.set = nil, false, false
+		j.JSON, j.Valid, j.Set = nil, false, false
 		return nil
 	}
-	j.Valid, j.set = true, true
+	j.Valid, j.Set = true, true
 	return convert.ConvertAssign(&j.JSON, value)
 }
 

@@ -40,8 +40,8 @@ func TestUnmarshalBool(t *testing.T) {
 	err = json.Unmarshal(nullJSON, &null)
 	maybePanic(err)
 	assertNullBool(t, null, "null json")
-	if !null.set {
-		t.Error("should be set", err)
+	if !null.Set {
+		t.Error("should be Set", err)
 	}
 
 	var badType Bool

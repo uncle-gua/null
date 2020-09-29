@@ -13,7 +13,7 @@ import (
 type Bool struct {
 	Bool  bool
 	Valid bool
-	set   bool
+	Set   bool
 }
 
 // NewBool creates a new Bool
@@ -21,7 +21,7 @@ func NewBool(b bool, valid, set bool) Bool {
 	return Bool{
 		Bool:  b,
 		Valid: valid,
-		set:   set,
+		Set:   set,
 	}
 }
 
@@ -39,12 +39,12 @@ func BoolFromPtr(b *bool) Bool {
 }
 
 func (b Bool) IsSet() bool {
-	return b.set
+	return b.Set
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
 func (b *Bool) UnmarshalJSON(data []byte) error {
-	b.set = true
+	b.Set = true
 
 	if bytes.Equal(data, NullBytes) {
 		b.Bool = false
@@ -62,7 +62,7 @@ func (b *Bool) UnmarshalJSON(data []byte) error {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (b *Bool) UnmarshalText(text []byte) error {
-	b.set = true
+	b.Set = true
 	if text == nil || len(text) == 0 {
 		b.Valid = false
 		return nil
@@ -108,7 +108,7 @@ func (b Bool) MarshalText() ([]byte, error) {
 func (b *Bool) SetValid(v bool) {
 	b.Bool = v
 	b.Valid = true
-	b.set = true
+	b.Set = true
 }
 
 // Ptr returns a pointer to this Bool's value, or a nil pointer if this Bool is null.
@@ -127,10 +127,10 @@ func (b Bool) IsZero() bool {
 // Scan implements the Scanner interface.
 func (b *Bool) Scan(value interface{}) error {
 	if value == nil {
-		b.Bool, b.Valid, b.set = false, false, false
+		b.Bool, b.Valid, b.Set = false, false, false
 		return nil
 	}
-	b.Valid, b.set = true, true
+	b.Valid, b.Set = true, true
 	return convert.ConvertAssign(&b.Bool, value)
 }
 

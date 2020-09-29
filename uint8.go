@@ -15,7 +15,7 @@ import (
 type Uint8 struct {
 	Uint8 uint8
 	Valid bool
-	set   bool
+	Set   bool
 }
 
 // NewUint8 creates a new Uint8
@@ -23,7 +23,7 @@ func NewUint8(i uint8, valid, set bool) Uint8 {
 	return Uint8{
 		Uint8: i,
 		Valid: valid,
-		set:   set,
+		Set:   set,
 	}
 }
 
@@ -41,12 +41,12 @@ func Uint8FromPtr(i *uint8) Uint8 {
 }
 
 func (u Uint8) IsSet() bool {
-	return u.set
+	return u.Set
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
 func (u *Uint8) UnmarshalJSON(data []byte) error {
-	u.set = true
+	u.Set = true
 	if bytes.Equal(data, NullBytes) {
 		u.Valid = false
 		u.Uint8 = 0
@@ -69,7 +69,7 @@ func (u *Uint8) UnmarshalJSON(data []byte) error {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (u *Uint8) UnmarshalText(text []byte) error {
-	u.set = true
+	u.Set = true
 	if text == nil || len(text) == 0 {
 		u.Valid = false
 		return nil
@@ -103,7 +103,7 @@ func (u Uint8) MarshalText() ([]byte, error) {
 func (u *Uint8) SetValid(n uint8) {
 	u.Uint8 = n
 	u.Valid = true
-	u.set = true
+	u.Set = true
 }
 
 // Ptr returns a pointer to this Uint8's value, or a nil pointer if this Uint8 is null.
@@ -122,10 +122,10 @@ func (u Uint8) IsZero() bool {
 // Scan implements the Scanner interface.
 func (u *Uint8) Scan(value interface{}) error {
 	if value == nil {
-		u.Uint8, u.Valid, u.set = 0, false, false
+		u.Uint8, u.Valid, u.Set = 0, false, false
 		return nil
 	}
-	u.Valid, u.set = true, true
+	u.Valid, u.Set = true, true
 	return convert.ConvertAssign(&u.Uint8, value)
 }
 

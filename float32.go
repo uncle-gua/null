@@ -13,7 +13,7 @@ import (
 type Float32 struct {
 	Float32 float32
 	Valid   bool
-	set     bool
+	Set     bool
 }
 
 // NewFloat32 creates a new Float32
@@ -21,7 +21,7 @@ func NewFloat32(f float32, valid, set bool) Float32 {
 	return Float32{
 		Float32: f,
 		Valid:   valid,
-		set:     set,
+		Set:     set,
 	}
 }
 
@@ -39,12 +39,12 @@ func Float32FromPtr(f *float32) Float32 {
 }
 
 func (f Float32) IsSet() bool {
-	return f.set
+	return f.Set
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
 func (f *Float32) UnmarshalJSON(data []byte) error {
-	f.set = true
+	f.Set = true
 	if bytes.Equal(data, NullBytes) {
 		f.Valid = false
 		f.Float32 = 0
@@ -63,7 +63,7 @@ func (f *Float32) UnmarshalJSON(data []byte) error {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (f *Float32) UnmarshalText(text []byte) error {
-	f.set = true
+	f.Set = true
 	if text == nil || len(text) == 0 {
 		f.Valid = false
 		return nil
@@ -97,7 +97,7 @@ func (f Float32) MarshalText() ([]byte, error) {
 func (f *Float32) SetValid(n float32) {
 	f.Float32 = n
 	f.Valid = true
-	f.set = true
+	f.Set = true
 }
 
 // Ptr returns a pointer to this Float32's value, or a nil pointer if this Float32 is null.
@@ -116,10 +116,10 @@ func (f Float32) IsZero() bool {
 // Scan implements the Scanner interface.
 func (f *Float32) Scan(value interface{}) error {
 	if value == nil {
-		f.Float32, f.Valid, f.set = 0, false, false
+		f.Float32, f.Valid, f.Set = 0, false, false
 		return nil
 	}
-	f.Valid, f.set = true, true
+	f.Valid, f.Set = true, true
 	return convert.ConvertAssign(&f.Float32, value)
 }
 

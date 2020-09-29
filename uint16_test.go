@@ -41,8 +41,8 @@ func TestUnmarshalUint16(t *testing.T) {
 	err = json.Unmarshal(nullJSON, &null)
 	maybePanic(err)
 	assertNullUint16(t, null, "null json")
-	if !null.set {
-		t.Error("should be set")
+	if !null.Set {
+		t.Error("should be Set")
 	}
 
 	var badType Uint16

@@ -34,8 +34,8 @@ func TestUnmarshalByte(t *testing.T) {
 	err := json.Unmarshal(nullJSON, &null)
 	maybePanic(err)
 	assertNullByte(t, null, "null json")
-	if !null.set {
-		t.Error("expected set to be true")
+	if !null.Set {
+		t.Error("expected Set to be true")
 	}
 
 	var badType Byte

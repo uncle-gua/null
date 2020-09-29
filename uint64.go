@@ -13,7 +13,7 @@ import (
 type Uint64 struct {
 	Uint64 uint64
 	Valid  bool
-	set    bool
+	Set    bool
 }
 
 // NewUint64 creates a new Uint64
@@ -21,7 +21,7 @@ func NewUint64(i uint64, valid, set bool) Uint64 {
 	return Uint64{
 		Uint64: i,
 		Valid:  valid,
-		set:    set,
+		Set:    set,
 	}
 }
 
@@ -39,12 +39,12 @@ func Uint64FromPtr(i *uint64) Uint64 {
 }
 
 func (u Uint64) IsSet() bool {
-	return u.set
+	return u.Set
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
 func (u *Uint64) UnmarshalJSON(data []byte) error {
-	u.set = true
+	u.Set = true
 	if bytes.Equal(data, NullBytes) {
 		u.Uint64 = 0
 		u.Valid = false
@@ -61,7 +61,7 @@ func (u *Uint64) UnmarshalJSON(data []byte) error {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (u *Uint64) UnmarshalText(text []byte) error {
-	u.set = true
+	u.Set = true
 	if text == nil || len(text) == 0 {
 		u.Valid = false
 		return nil
@@ -95,7 +95,7 @@ func (u Uint64) MarshalText() ([]byte, error) {
 func (u *Uint64) SetValid(n uint64) {
 	u.Uint64 = n
 	u.Valid = true
-	u.set = true
+	u.Set = true
 }
 
 // Ptr returns a pointer to this Uint64's value, or a nil pointer if this Uint64 is null.
@@ -114,10 +114,10 @@ func (u Uint64) IsZero() bool {
 // Scan implements the Scanner interface.
 func (u *Uint64) Scan(value interface{}) error {
 	if value == nil {
-		u.Uint64, u.Valid, u.set = 0, false, false
+		u.Uint64, u.Valid, u.Set = 0, false, false
 		return nil
 	}
-	u.Valid, u.set = true, true
+	u.Valid, u.Set = true, true
 	return convert.ConvertAssign(&u.Uint64, value)
 }
 
