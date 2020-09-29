@@ -15,7 +15,7 @@ import (
 type Uint16 struct {
 	Uint16 uint16
 	Valid  bool
-	set    bool
+	Set    bool
 }
 
 // NewUint16 creates a new Uint16
@@ -23,7 +23,7 @@ func NewUint16(i uint16, valid, set bool) Uint16 {
 	return Uint16{
 		Uint16: i,
 		Valid:  valid,
-		set:    set,
+		Set:    set,
 	}
 }
 
@@ -41,12 +41,12 @@ func Uint16FromPtr(i *uint16) Uint16 {
 }
 
 func (u Uint16) IsSet() bool {
-	return u.set
+	return u.Set
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
 func (u *Uint16) UnmarshalJSON(data []byte) error {
-	u.set = true
+	u.Set = true
 	if bytes.Equal(data, NullBytes) {
 		u.Valid = false
 		u.Uint16 = 0
@@ -69,7 +69,7 @@ func (u *Uint16) UnmarshalJSON(data []byte) error {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (u *Uint16) UnmarshalText(text []byte) error {
-	u.set = true
+	u.Set = true
 	if text == nil || len(text) == 0 {
 		u.Valid = false
 		return nil
@@ -103,7 +103,7 @@ func (u Uint16) MarshalText() ([]byte, error) {
 func (u *Uint16) SetValid(n uint16) {
 	u.Uint16 = n
 	u.Valid = true
-	u.set = true
+	u.Set = true
 }
 
 // Ptr returns a pointer to this Uint16's value, or a nil pointer if this Uint16 is null.
@@ -122,10 +122,10 @@ func (u Uint16) IsZero() bool {
 // Scan implements the Scanner interface.
 func (u *Uint16) Scan(value interface{}) error {
 	if value == nil {
-		u.Uint16, u.Valid, u.set = 0, false, false
+		u.Uint16, u.Valid, u.Set = 0, false, false
 		return nil
 	}
-	u.Valid, u.set = true, true
+	u.Valid, u.Set = true, true
 	return convert.ConvertAssign(&u.Uint16, value)
 }
 

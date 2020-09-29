@@ -39,8 +39,8 @@ func TestUnmarshalFloat32(t *testing.T) {
 	err = json.Unmarshal(nullJSON, &null)
 	maybePanic(err)
 	assertNullFloat32(t, null, "null json")
-	if !null.set {
-		t.Error("should be set")
+	if !null.Set {
+		t.Error("should be Set")
 	}
 
 	var badType Float32

@@ -15,7 +15,7 @@ import (
 type Uint32 struct {
 	Uint32 uint32
 	Valid  bool
-	set    bool
+	Set    bool
 }
 
 // NewUint32 creates a new Uint32
@@ -23,7 +23,7 @@ func NewUint32(i uint32, valid, set bool) Uint32 {
 	return Uint32{
 		Uint32: i,
 		Valid:  valid,
-		set:    set,
+		Set:    set,
 	}
 }
 
@@ -41,12 +41,12 @@ func Uint32FromPtr(i *uint32) Uint32 {
 }
 
 func (u Uint32) IsSet() bool {
-	return u.set
+	return u.Set
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
 func (u *Uint32) UnmarshalJSON(data []byte) error {
-	u.set = true
+	u.Set = true
 	if bytes.Equal(data, NullBytes) {
 		u.Valid = false
 		u.Uint32 = 0
@@ -69,7 +69,7 @@ func (u *Uint32) UnmarshalJSON(data []byte) error {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (u *Uint32) UnmarshalText(text []byte) error {
-	u.set = true
+	u.Set = true
 	if text == nil || len(text) == 0 {
 		u.Valid = false
 		return nil
@@ -103,7 +103,7 @@ func (u Uint32) MarshalText() ([]byte, error) {
 func (u *Uint32) SetValid(n uint32) {
 	u.Uint32 = n
 	u.Valid = true
-	u.set = true
+	u.Set = true
 }
 
 // Ptr returns a pointer to this Uint32's value, or a nil pointer if this Uint32 is null.
@@ -122,10 +122,10 @@ func (u Uint32) IsZero() bool {
 // Scan implements the Scanner interface.
 func (u *Uint32) Scan(value interface{}) error {
 	if value == nil {
-		u.Uint32, u.Valid, u.set = 0, false, false
+		u.Uint32, u.Valid, u.Set = 0, false, false
 		return nil
 	}
-	u.Valid, u.set = true, true
+	u.Valid, u.Set = true, true
 	return convert.ConvertAssign(&u.Uint32, value)
 }
 

@@ -24,8 +24,8 @@ func TestUnmarshalTimeJSON(t *testing.T) {
 	err = json.Unmarshal(nullTimeJSON, &null)
 	maybePanic(err)
 	assertNullTime(t, null, "null time json")
-	if !null.set {
-		t.Error("should be set")
+	if !null.Set {
+		t.Error("should be Set")
 	}
 
 	var invalid Time

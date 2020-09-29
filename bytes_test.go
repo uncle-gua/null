@@ -57,8 +57,8 @@ func TestUnmarshalBytes(t *testing.T) {
 	if null.Bytes != nil {
 		t.Errorf("Expected Bytes to be nil, but was not: %#v %#v", null.Bytes, []byte(`null`))
 	}
-	if !null.set {
-		t.Errorf("Expected set to be true; got false")
+	if !null.Set {
+		t.Errorf("Expected Set to be true; got false")
 	}
 }
 
