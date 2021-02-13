@@ -109,6 +109,12 @@ func (u *Uint64) Scan(value interface{}) error {
 		return nil
 	}
 	u.Valid = true
+
+	// If value is negative int64, convert it to uint64
+	if i, ok := value.(int64); ok && i < 0 {
+		return convert.ConvertAssign(&u.Uint64, uint64(i))
+	}
+
 	return convert.ConvertAssign(&u.Uint64, value)
 }
 
