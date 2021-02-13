@@ -124,6 +124,7 @@ func (u Uint64) Value() (driver.Value, error) {
 		return nil, nil
 	}
 
+	// If u.Uint64 overflows the range of int64, convert it to string
 	if u.Uint64 >= 1<<63 {
 		return strconv.FormatUint(u.Uint64, 10), nil
 	}
