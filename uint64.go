@@ -17,25 +17,25 @@ type Uint64 struct {
 }
 
 // NewUint64 creates a new Uint64
-func NewUint64(i uint64, valid, set bool) Uint64 {
+func NewUint64(i uint64, valid bool) Uint64 {
 	return Uint64{
 		Uint64: i,
 		Valid:  valid,
-		Set:    set,
+		Set:    true,
 	}
 }
 
 // Uint64From creates a new Uint64 that will always be valid.
 func Uint64From(i uint64) Uint64 {
-	return NewUint64(i, true, true)
+	return NewUint64(i, true)
 }
 
 // Uint64FromPtr creates a new Uint64 that be null if i is nil.
 func Uint64FromPtr(i *uint64) Uint64 {
 	if i == nil {
-		return NewUint64(0, false, true)
+		return NewUint64(0, false)
 	}
-	return NewUint64(*i, true, true)
+	return NewUint64(*i, true)
 }
 
 func (u Uint64) IsSet() bool {

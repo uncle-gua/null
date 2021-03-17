@@ -17,25 +17,25 @@ type Int64 struct {
 }
 
 // NewInt64 creates a new Int64
-func NewInt64(i int64, valid, set bool) Int64 {
+func NewInt64(i int64, valid bool) Int64 {
 	return Int64{
 		Int64: i,
 		Valid: valid,
-		Set:   set,
+		Set:   true,
 	}
 }
 
 // Int64From creates a new Int64 that will always be valid.
 func Int64From(i int64) Int64 {
-	return NewInt64(i, true, true)
+	return NewInt64(i, true)
 }
 
 // Int64FromPtr creates a new Int64 that be null if i is nil.
 func Int64FromPtr(i *int64) Int64 {
 	if i == nil {
-		return NewInt64(0, false, true)
+		return NewInt64(0, false)
 	}
-	return NewInt64(*i, true, true)
+	return NewInt64(*i, true)
 }
 
 func (i Int64) IsSet() bool {

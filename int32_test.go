@@ -103,7 +103,7 @@ func TestMarshalInt32(t *testing.T) {
 	assertJSONEquals(t, data, "2147483646", "non-empty json marshal")
 
 	// invalid values should be encoded as null
-	null := NewInt32(0, false, true)
+	null := NewInt32(0, false)
 	data, err = json.Marshal(null)
 	maybePanic(err)
 	assertJSONEquals(t, data, "null", "null json marshal")
@@ -116,7 +116,7 @@ func TestMarshalInt32Text(t *testing.T) {
 	assertJSONEquals(t, data, "2147483646", "non-empty text marshal")
 
 	// invalid values should be encoded as null
-	null := NewInt32(0, false, true)
+	null := NewInt32(0, false)
 	data, err = null.MarshalText()
 	maybePanic(err)
 	assertJSONEquals(t, data, "", "null text marshal")
@@ -129,7 +129,7 @@ func TestInt32Pointer(t *testing.T) {
 		t.Errorf("bad %s int32: %#v ≠ %d\n", "pointer", ptr, 2147483646)
 	}
 
-	null := NewInt32(0, false, true)
+	null := NewInt32(0, false)
 	ptr = null.Ptr()
 	if ptr != nil {
 		t.Errorf("bad %s int32: %#v ≠ %s\n", "nil pointer", ptr, "nil")
@@ -142,19 +142,19 @@ func TestInt32IsZero(t *testing.T) {
 		t.Errorf("IsZero() should be false")
 	}
 
-	null := NewInt32(0, false, true)
+	null := NewInt32(0, false)
 	if !null.IsZero() {
 		t.Errorf("IsZero() should be true")
 	}
 
-	zero := NewInt32(0, true, true)
+	zero := NewInt32(0, true)
 	if zero.IsZero() {
 		t.Errorf("IsZero() should be false")
 	}
 }
 
 func TestInt32SetValid(t *testing.T) {
-	change := NewInt32(0, false, true)
+	change := NewInt32(0, false)
 	assertNullInt32(t, change, "SetValid()")
 	change.SetValid(2147483646)
 	assertInt32(t, change, "SetValid()")

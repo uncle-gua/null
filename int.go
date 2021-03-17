@@ -18,25 +18,25 @@ type Int struct {
 }
 
 // NewInt creates a new Int
-func NewInt(i int, valid, set bool) Int {
+func NewInt(i int, valid bool) Int {
 	return Int{
 		Int:   i,
 		Valid: valid,
-		Set:   set,
+		Set:   true,
 	}
 }
 
 // IntFrom creates a new Int that will always be valid.
 func IntFrom(i int) Int {
-	return NewInt(i, true, true)
+	return NewInt(i, true)
 }
 
 // IntFromPtr creates a new Int that be null if i is nil.
 func IntFromPtr(i *int) Int {
 	if i == nil {
-		return NewInt(0, false, true)
+		return NewInt(0, false)
 	}
-	return NewInt(*i, true, true)
+	return NewInt(*i, true)
 }
 
 func (i Int) IsSet() bool {

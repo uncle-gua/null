@@ -5,10 +5,6 @@ import (
 	"testing"
 )
 
-var (
-	byteJSON = []byte(`"b"`)
-)
-
 func TestByteFrom(t *testing.T) {
 	i := ByteFrom('b')
 	assertByte(t, i, "ByteFrom()")
@@ -80,7 +76,7 @@ func TestMarshalByte(t *testing.T) {
 	assertJSONEquals(t, data, `"b"`, "non-empty json marshal")
 
 	// invalid values should be encoded as null
-	null := NewByte(0, false, true)
+	null := NewByte(0, false)
 	data, err = json.Marshal(null)
 	maybePanic(err)
 	assertJSONEquals(t, data, "null", "null json marshal")
@@ -93,7 +89,7 @@ func TestMarshalByteText(t *testing.T) {
 	assertJSONEquals(t, data, "b", "non-empty text marshal")
 
 	// invalid values should be encoded as null
-	null := NewByte(0, false, true)
+	null := NewByte(0, false)
 	data, err = null.MarshalText()
 	maybePanic(err)
 	assertJSONEquals(t, data, "", "null text marshal")
@@ -106,7 +102,7 @@ func TestBytePointer(t *testing.T) {
 		t.Errorf("bad %s int: %#v ≠ %d\n", "pointer", ptr, 'b')
 	}
 
-	null := NewByte(0, false, true)
+	null := NewByte(0, false)
 	ptr = null.Ptr()
 	if ptr != nil {
 		t.Errorf("bad %s int: %#v ≠ %s\n", "nil pointer", ptr, "nil")
@@ -119,19 +115,19 @@ func TestByteIsZero(t *testing.T) {
 		t.Errorf("IsZero() should be false")
 	}
 
-	null := NewByte(0, false, true)
+	null := NewByte(0, false)
 	if !null.IsZero() {
 		t.Errorf("IsZero() should be true")
 	}
 
-	zero := NewByte(0, true, true)
+	zero := NewByte(0, true)
 	if zero.IsZero() {
 		t.Errorf("IsZero() should be false")
 	}
 }
 
 func TestByteSetValid(t *testing.T) {
-	change := NewByte(0, false, true)
+	change := NewByte(0, false)
 	assertNullByte(t, change, "SetValid()")
 	change.SetValid('b')
 	assertByte(t, change, "SetValid()")

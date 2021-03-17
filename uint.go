@@ -17,25 +17,25 @@ type Uint struct {
 }
 
 // NewUint creates a new Uint
-func NewUint(i uint, valid, set bool) Uint {
+func NewUint(i uint, valid bool) Uint {
 	return Uint{
 		Uint:  i,
 		Valid: valid,
-		Set:   set,
+		Set:   true,
 	}
 }
 
 // UintFrom creates a new Uint that will always be valid.
 func UintFrom(i uint) Uint {
-	return NewUint(i, true, true)
+	return NewUint(i, true)
 }
 
 // UintFromPtr creates a new Uint that be null if i is nil.
 func UintFromPtr(i *uint) Uint {
 	if i == nil {
-		return NewUint(0, false, true)
+		return NewUint(0, false)
 	}
-	return NewUint(*i, true, true)
+	return NewUint(*i, true)
 }
 
 func (u Uint) IsSet() bool {

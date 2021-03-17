@@ -19,25 +19,25 @@ type Uint8 struct {
 }
 
 // NewUint8 creates a new Uint8
-func NewUint8(i uint8, valid, set bool) Uint8 {
+func NewUint8(i uint8, valid bool) Uint8 {
 	return Uint8{
 		Uint8: i,
 		Valid: valid,
-		Set:   set,
+		Set:   true,
 	}
 }
 
 // Uint8From creates a new Uint8 that will always be valid.
 func Uint8From(i uint8) Uint8 {
-	return NewUint8(i, true, true)
+	return NewUint8(i, true)
 }
 
 // Uint8FromPtr creates a new Uint8 that be null if i is nil.
 func Uint8FromPtr(i *uint8) Uint8 {
 	if i == nil {
-		return NewUint8(0, false, true)
+		return NewUint8(0, false)
 	}
-	return NewUint8(*i, true, true)
+	return NewUint8(*i, true)
 }
 
 func (u Uint8) IsSet() bool {

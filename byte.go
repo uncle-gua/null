@@ -15,25 +15,25 @@ type Byte struct {
 }
 
 // NewByte creates a new Byte
-func NewByte(b byte, valid, set bool) Byte {
+func NewByte(b byte, valid bool) Byte {
 	return Byte{
 		Byte:  b,
 		Valid: valid,
-		Set:   set,
+		Set:   true,
 	}
 }
 
 // ByteFrom creates a new Byte that will always be valid.
 func ByteFrom(b byte) Byte {
-	return NewByte(b, true, true)
+	return NewByte(b, true)
 }
 
 // ByteFromPtr creates a new Byte that be null if i is nil.
 func ByteFromPtr(b *byte) Byte {
 	if b == nil {
-		return NewByte(0, false, true)
+		return NewByte(0, false)
 	}
-	return NewByte(*b, true, true)
+	return NewByte(*b, true)
 }
 
 func (b Byte) IsSet() bool {

@@ -17,25 +17,25 @@ type Float64 struct {
 }
 
 // NewFloat64 creates a new Float64
-func NewFloat64(f float64, valid, set bool) Float64 {
+func NewFloat64(f float64, valid bool) Float64 {
 	return Float64{
 		Float64: f,
 		Valid:   valid,
-		Set:     set,
+		Set:     true,
 	}
 }
 
 // Float64From creates a new Float64 that will always be valid.
 func Float64From(f float64) Float64 {
-	return NewFloat64(f, true, true)
+	return NewFloat64(f, true)
 }
 
 // Float64FromPtr creates a new Float64 that be null if f is nil.
 func Float64FromPtr(f *float64) Float64 {
 	if f == nil {
-		return NewFloat64(0, false, true)
+		return NewFloat64(0, false)
 	}
-	return NewFloat64(*f, true, true)
+	return NewFloat64(*f, true)
 }
 
 func (f Float64) IsSet() bool {

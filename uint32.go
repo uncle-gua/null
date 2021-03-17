@@ -19,25 +19,25 @@ type Uint32 struct {
 }
 
 // NewUint32 creates a new Uint32
-func NewUint32(i uint32, valid, set bool) Uint32 {
+func NewUint32(i uint32, valid bool) Uint32 {
 	return Uint32{
 		Uint32: i,
 		Valid:  valid,
-		Set:    set,
+		Set:    true,
 	}
 }
 
 // Uint32From creates a new Uint32 that will always be valid.
 func Uint32From(i uint32) Uint32 {
-	return NewUint32(i, true, true)
+	return NewUint32(i, true)
 }
 
 // Uint32FromPtr creates a new Uint32 that be null if i is nil.
 func Uint32FromPtr(i *uint32) Uint32 {
 	if i == nil {
-		return NewUint32(0, false, true)
+		return NewUint32(0, false)
 	}
-	return NewUint32(*i, true, true)
+	return NewUint32(*i, true)
 }
 
 func (u Uint32) IsSet() bool {

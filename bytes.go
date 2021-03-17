@@ -19,25 +19,25 @@ type Bytes struct {
 }
 
 // NewBytes creates a new Bytes
-func NewBytes(b []byte, valid, set bool) Bytes {
+func NewBytes(b []byte, valid bool) Bytes {
 	return Bytes{
 		Bytes: b,
 		Valid: valid,
-		Set:   set,
+		Set:   true,
 	}
 }
 
 // BytesFrom creates a new Bytes that will be invalid if nil.
 func BytesFrom(b []byte) Bytes {
-	return NewBytes(b, b != nil, true)
+	return NewBytes(b, b != nil)
 }
 
 // BytesFromPtr creates a new Bytes that will be invalid if nil.
 func BytesFromPtr(b *[]byte) Bytes {
 	if b == nil {
-		return NewBytes(nil, false, true)
+		return NewBytes(nil, false)
 	}
-	n := NewBytes(*b, true, true)
+	n := NewBytes(*b, true)
 	return n
 }
 

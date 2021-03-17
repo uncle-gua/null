@@ -18,23 +18,23 @@ type String struct {
 
 // StringFrom creates a new String that will never be blank.
 func StringFrom(s string) String {
-	return NewString(s, true, true)
+	return NewString(s, true)
 }
 
 // StringFromPtr creates a new String that be null if s is nil.
 func StringFromPtr(s *string) String {
 	if s == nil {
-		return NewString("", false, true)
+		return NewString("", false)
 	}
-	return NewString(*s, true, true)
+	return NewString(*s, true)
 }
 
 // NewString creates a new String
-func NewString(s string, valid, set bool) String {
+func NewString(s string, valid bool) String {
 	return String{
 		String: s,
 		Valid:  valid,
-		Set:    set,
+		Set:    true,
 	}
 }
 

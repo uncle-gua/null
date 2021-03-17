@@ -17,25 +17,25 @@ type Float32 struct {
 }
 
 // NewFloat32 creates a new Float32
-func NewFloat32(f float32, valid, set bool) Float32 {
+func NewFloat32(f float32, valid bool) Float32 {
 	return Float32{
 		Float32: f,
 		Valid:   valid,
-		Set:     set,
+		Set:     true,
 	}
 }
 
 // Float32From creates a new Float32 that will always be valid.
 func Float32From(f float32) Float32 {
-	return NewFloat32(f, true, true)
+	return NewFloat32(f, true)
 }
 
 // Float32FromPtr creates a new Float32 that be null if f is nil.
 func Float32FromPtr(f *float32) Float32 {
 	if f == nil {
-		return NewFloat32(0, false, true)
+		return NewFloat32(0, false)
 	}
-	return NewFloat32(*f, true, true)
+	return NewFloat32(*f, true)
 }
 
 func (f Float32) IsSet() bool {

@@ -17,25 +17,25 @@ type Bool struct {
 }
 
 // NewBool creates a new Bool
-func NewBool(b bool, valid, set bool) Bool {
+func NewBool(b, valid bool) Bool {
 	return Bool{
 		Bool:  b,
 		Valid: valid,
-		Set:   set,
+		Set:   true,
 	}
 }
 
 // BoolFrom creates a new Bool that will always be valid.
 func BoolFrom(b bool) Bool {
-	return NewBool(b, true, true)
+	return NewBool(b, true)
 }
 
 // BoolFromPtr creates a new Bool that will be null if f is nil.
 func BoolFromPtr(b *bool) Bool {
 	if b == nil {
-		return NewBool(false, false, true)
+		return NewBool(false, false)
 	}
-	return NewBool(*b, true, true)
+	return NewBool(*b, true)
 }
 
 func (b Bool) IsSet() bool {

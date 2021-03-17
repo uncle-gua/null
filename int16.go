@@ -19,25 +19,25 @@ type Int16 struct {
 }
 
 // NewInt16 creates a new Int16
-func NewInt16(i int16, valid, set bool) Int16 {
+func NewInt16(i int16, valid bool) Int16 {
 	return Int16{
 		Int16: i,
 		Valid: valid,
-		Set:   set,
+		Set:   true,
 	}
 }
 
 // Int16From creates a new Int16 that will always be valid.
 func Int16From(i int16) Int16 {
-	return NewInt16(i, true, true)
+	return NewInt16(i, true)
 }
 
 // Int16FromPtr creates a new Int16 that be null if i is nil.
 func Int16FromPtr(i *int16) Int16 {
 	if i == nil {
-		return NewInt16(0, false, true)
+		return NewInt16(0, false)
 	}
-	return NewInt16(*i, true, true)
+	return NewInt16(*i, true)
 }
 
 func (i Int16) IsSet() bool {

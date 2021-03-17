@@ -17,25 +17,25 @@ type Time struct {
 }
 
 // NewTime creates a new Time.
-func NewTime(t time.Time, valid, set bool) Time {
+func NewTime(t time.Time, valid bool) Time {
 	return Time{
 		Time:  t,
 		Valid: valid,
-		Set:   set,
+		Set:   true,
 	}
 }
 
 // TimeFrom creates a new Time that will always be valid.
 func TimeFrom(t time.Time) Time {
-	return NewTime(t, true, true)
+	return NewTime(t, true)
 }
 
 // TimeFromPtr creates a new Time that will be null if t is nil.
 func TimeFromPtr(t *time.Time) Time {
 	if t == nil {
-		return NewTime(time.Time{}, false, true)
+		return NewTime(time.Time{}, false)
 	}
-	return NewTime(*t, true, true)
+	return NewTime(*t, true)
 }
 
 func (t Time) IsSet() bool {

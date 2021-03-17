@@ -19,25 +19,25 @@ type JSON struct {
 }
 
 // NewJSON creates a new JSON
-func NewJSON(b []byte, valid, set bool) JSON {
+func NewJSON(b []byte, valid bool) JSON {
 	return JSON{
 		JSON:  b,
 		Valid: valid,
-		Set:   set,
+		Set:   true,
 	}
 }
 
 // JSONFrom creates a new JSON that will be invalid if nil.
 func JSONFrom(b []byte) JSON {
-	return NewJSON(b, b != nil, true)
+	return NewJSON(b, b != nil)
 }
 
 // JSONFromPtr creates a new JSON that will be invalid if nil.
 func JSONFromPtr(b *[]byte) JSON {
 	if b == nil {
-		return NewJSON(nil, false, true)
+		return NewJSON(nil, false)
 	}
-	n := NewJSON(*b, true, true)
+	n := NewJSON(*b, true)
 	return n
 }
 

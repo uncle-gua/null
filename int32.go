@@ -20,25 +20,25 @@ type Int32 struct {
 }
 
 // NewInt32 creates a new Int32
-func NewInt32(i int32, valid, set bool) Int32 {
+func NewInt32(i int32, valid bool) Int32 {
 	return Int32{
 		Int32: i,
 		Valid: valid,
-		Set:   set,
+		Set:   true,
 	}
 }
 
 // Int32From creates a new Int32 that will always be valid.
 func Int32From(i int32) Int32 {
-	return NewInt32(i, true, true)
+	return NewInt32(i, true)
 }
 
 // Int32FromPtr creates a new Int32 that be null if i is nil.
 func Int32FromPtr(i *int32) Int32 {
 	if i == nil {
-		return NewInt32(0, false, true)
+		return NewInt32(0, false)
 	}
-	return NewInt32(*i, true, true)
+	return NewInt32(*i, true)
 }
 
 func (i Int32) IsSet() bool {

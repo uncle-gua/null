@@ -81,7 +81,7 @@ func TestMarshalBytes(t *testing.T) {
 	assertJSONEquals(t, data, string(b64BytesJSON), "non-empty json marshal")
 
 	// invalid values should be encoded as null
-	null := NewBytes(nil, false, true)
+	null := NewBytes(nil, false)
 	data, err = json.Marshal(null)
 	maybePanic(err)
 	assertJSONEquals(t, data, "null", "null json marshal")
@@ -94,7 +94,7 @@ func TestMarshalBytesText(t *testing.T) {
 	assertJSONEquals(t, data, `"hello"`, "non-empty text marshal")
 
 	// invalid values should be encoded as null
-	null := NewBytes(nil, false, true)
+	null := NewBytes(nil, false)
 	data, err = null.MarshalText()
 	maybePanic(err)
 	assertJSONEquals(t, data, "", "null text marshal")
@@ -107,7 +107,7 @@ func TestBytesPointer(t *testing.T) {
 		t.Errorf("bad %s []byte: %#v ≠ %s\n", "pointer", ptr, `"hello"`)
 	}
 
-	null := NewBytes(nil, false, true)
+	null := NewBytes(nil, false)
 	ptr = null.Ptr()
 	if ptr != nil {
 		t.Errorf("bad %s []byte: %#v ≠ %s\n", "nil pointer", ptr, "nil")
@@ -120,19 +120,19 @@ func TestBytesIsZero(t *testing.T) {
 		t.Errorf("IsZero() should be false")
 	}
 
-	null := NewBytes(nil, false, true)
+	null := NewBytes(nil, false)
 	if !null.IsZero() {
 		t.Errorf("IsZero() should be true")
 	}
 
-	zero := NewBytes(nil, true, true)
+	zero := NewBytes(nil, true)
 	if zero.IsZero() {
 		t.Errorf("IsZero() should be false")
 	}
 }
 
 func TestBytesSetValid(t *testing.T) {
-	change := NewBytes(nil, false, true)
+	change := NewBytes(nil, false)
 	assertNullBytes(t, change, "SetValid()")
 	change.SetValid(hello)
 	assertBytes(t, change, "SetValid()")
