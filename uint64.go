@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"strconv"
 
-	"github.com/razor-1/null/v9/convert"
+	"github.com/volatiletech/null/v8/convert"
 )
 
 // Uint64 is an nullable uint64.
@@ -17,25 +17,25 @@ type Uint64 struct {
 }
 
 // NewUint64 creates a new Uint64
-func NewUint64(i uint64, valid, set bool) Uint64 {
+func NewUint64(i uint64, valid bool) Uint64 {
 	return Uint64{
 		Uint64: i,
 		Valid:  valid,
-		Set:    set,
+		Set:    true,
 	}
 }
 
 // Uint64From creates a new Uint64 that will always be valid.
 func Uint64From(i uint64) Uint64 {
-	return NewUint64(i, true, true)
+	return NewUint64(i, true)
 }
 
 // Uint64FromPtr creates a new Uint64 that be null if i is nil.
 func Uint64FromPtr(i *uint64) Uint64 {
 	if i == nil {
-		return NewUint64(0, false, true)
+		return NewUint64(0, false)
 	}
-	return NewUint64(*i, true, true)
+	return NewUint64(*i, true)
 }
 
 func (u Uint64) IsSet() bool {
@@ -118,6 +118,12 @@ func (u *Uint64) Scan(value interface{}) error {
 		return nil
 	}
 	u.Valid, u.Set = true, true
+
+	// If value is negative int64, convert it to uint64
+	if i, ok := value.(int64); ok && i < 0 {
+		return convert.ConvertAssign(&u.Uint64, uint64(i))
+	}
+
 	return convert.ConvertAssign(&u.Uint64, value)
 }
 
@@ -126,6 +132,12 @@ func (u Uint64) Value() (driver.Value, error) {
 	if !u.Valid {
 		return nil, nil
 	}
+
+	// If u.Uint64 overflows the range of int64, convert it to string
+	if u.Uint64 >= 1<<63 {
+		return strconv.FormatUint(u.Uint64, 10), nil
+	}
+
 	return int64(u.Uint64), nil
 }
 

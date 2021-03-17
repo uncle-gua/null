@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/razor-1/null/v9/convert"
+	"github.com/volatiletech/null/v9/convert"
 )
 
 // Bool is a nullable bool.

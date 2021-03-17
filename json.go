@@ -7,7 +7,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/razor-1/null/v9/convert"
+	"github.com/volatiletech/null/v9/convert"
 	"github.com/volatiletech/randomize"
 )
 

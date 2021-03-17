@@ -8,7 +8,7 @@ import (
 	"math"
 	"strconv"
 
-	"github.com/razor-1/null/v9/convert"
+	"github.com/volatiletech/null/v9/convert"
 )
 
 // Int8 is an nullable int8.
