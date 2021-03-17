@@ -8,7 +8,7 @@ import (
 	"math"
 	"strconv"
 
-	"github.com/razor-1/null/v9/convert"
+	"github.com/volatiletech/null/v9/convert"
 )
 
 // Uint32 is an nullable uint32.
