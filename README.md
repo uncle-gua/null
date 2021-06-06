@@ -20,7 +20,7 @@ please stop using gopkg.in and ensure you're using `vgo`, `dep` or vendoring to
 version null.
 
 ```
-go get -u "github.com/volatiletech/null"
+go get github.com/volatiletech/null/v8
 ```
 
 ### Usage
@@ -58,4 +58,4 @@ eventually](https://github.com/golang/go/issues/4357).
 
 ### License
 
-BSD
+BSD-3 (See License file)
