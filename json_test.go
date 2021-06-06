@@ -68,9 +68,6 @@ func TestMarshal(t *testing.T) {
 		t.Error(err)
 	}
 
-	if !bytes.Equal(i.JSON, []byte("null")) {
-		t.Errorf("Expected null, but got %s", string(i.JSON))
-	}
 	if i.Valid == true {
 		t.Error("Expected Valid false, got Valid true")
 	}
