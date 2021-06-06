@@ -39,6 +39,13 @@ func IntFromPtr(i *int) Int {
 	return NewInt(*i, true)
 }
 
+// IsValid returns true if this carries and explicit value and
+// is not null.
+func (i Int) IsValid() bool {
+	return i.Set && i.Valid
+}
+
+// IsSet returns true if this carries an explicit value (null inclusive)
 func (i Int) IsSet() bool {
 	return i.Set
 }

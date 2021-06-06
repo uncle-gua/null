@@ -38,6 +38,13 @@ func UintFromPtr(i *uint) Uint {
 	return NewUint(*i, true)
 }
 
+// IsValid returns true if this carries and explicit value and
+// is not null.
+func (u Uint) IsValid() bool {
+	return u.Set && u.Valid
+}
+
+// IsSet returns true if this carries an explicit value (null inclusive)
 func (u Uint) IsSet() bool {
 	return u.Set
 }

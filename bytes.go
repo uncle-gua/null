@@ -41,6 +41,13 @@ func BytesFromPtr(b *[]byte) Bytes {
 	return n
 }
 
+// IsValid returns true if this carries and explicit value and
+// is not null.
+func (b Bytes) IsValid() bool {
+	return b.Set && b.Valid
+}
+
+// IsSet returns true if this carries an explicit value (null inclusive)
 func (b Bytes) IsSet() bool {
 	return b.Set
 }

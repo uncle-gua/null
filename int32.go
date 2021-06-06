@@ -41,6 +41,13 @@ func Int32FromPtr(i *int32) Int32 {
 	return NewInt32(*i, true)
 }
 
+// IsValid returns true if this carries and explicit value and
+// is not null.
+func (i Int32) IsValid() bool {
+	return i.Set && i.Valid
+}
+
+// IsSet returns true if this carries an explicit value (null inclusive)
 func (i Int32) IsSet() bool {
 	return i.Set
 }

@@ -41,6 +41,13 @@ func JSONFromPtr(b *[]byte) JSON {
 	return n
 }
 
+// IsValid returns true if this carries and explicit value and
+// is not null.
+func (j JSON) IsValid() bool {
+	return j.Set && j.Valid
+}
+
+// IsSet returns true if this carries an explicit value (null inclusive)
 func (j JSON) IsSet() bool {
 	return j.Set
 }

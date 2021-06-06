@@ -38,6 +38,13 @@ func Uint64FromPtr(i *uint64) Uint64 {
 	return NewUint64(*i, true)
 }
 
+// IsValid returns true if this carries and explicit value and
+// is not null.
+func (u Uint64) IsValid() bool {
+	return u.Set && u.Valid
+}
+
+// IsSet returns true if this carries an explicit value (null inclusive)
 func (u Uint64) IsSet() bool {
 	return u.Set
 }

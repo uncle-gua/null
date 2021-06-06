@@ -40,6 +40,13 @@ func Uint32FromPtr(i *uint32) Uint32 {
 	return NewUint32(*i, true)
 }
 
+// IsValid returns true if this carries and explicit value and
+// is not null.
+func (u Uint32) IsValid() bool {
+	return u.Set && u.Valid
+}
+
+// IsSet returns true if this carries an explicit value (null inclusive)
 func (u Uint32) IsSet() bool {
 	return u.Set
 }

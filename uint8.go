@@ -40,6 +40,13 @@ func Uint8FromPtr(i *uint8) Uint8 {
 	return NewUint8(*i, true)
 }
 
+// IsValid returns true if this carries and explicit value and
+// is not null.
+func (u Uint8) IsValid() bool {
+	return u.Set && u.Valid
+}
+
+// IsSet returns true if this carries an explicit value (null inclusive)
 func (u Uint8) IsSet() bool {
 	return u.Set
 }

@@ -38,6 +38,13 @@ func BoolFromPtr(b *bool) Bool {
 	return NewBool(*b, true)
 }
 
+// IsValid returns true if this carries and explicit value and
+// is not null.
+func (b Bool) IsValid() bool {
+	return b.Set && b.Valid
+}
+
+// IsSet returns true if this carries an explicit value (null inclusive)
 func (b Bool) IsSet() bool {
 	return b.Set
 }

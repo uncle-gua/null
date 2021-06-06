@@ -38,6 +38,13 @@ func Float32FromPtr(f *float32) Float32 {
 	return NewFloat32(*f, true)
 }
 
+// IsValid returns true if this carries and explicit value and
+// is not null.
+func (f Float32) IsValid() bool {
+	return f.Set && f.Valid
+}
+
+// IsSet returns true if this carries an explicit value (null inclusive)
 func (f Float32) IsSet() bool {
 	return f.Set
 }

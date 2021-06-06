@@ -38,6 +38,13 @@ func Float64FromPtr(f *float64) Float64 {
 	return NewFloat64(*f, true)
 }
 
+// IsValid returns true if this carries and explicit value and
+// is not null.
+func (f Float64) IsValid() bool {
+	return f.Set && f.Valid
+}
+
+// IsSet returns true if this carries an explicit value (null inclusive)
 func (f Float64) IsSet() bool {
 	return f.Set
 }

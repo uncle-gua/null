@@ -40,6 +40,13 @@ func Int16FromPtr(i *int16) Int16 {
 	return NewInt16(*i, true)
 }
 
+// IsValid returns true if this carries and explicit value and
+// is not null.
+func (i Int16) IsValid() bool {
+	return i.Set && i.Valid
+}
+
+// IsSet returns true if this carries an explicit value (null inclusive)
 func (i Int16) IsSet() bool {
 	return i.Set
 }

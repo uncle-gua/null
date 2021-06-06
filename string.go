@@ -38,6 +38,13 @@ func NewString(s string, valid bool) String {
 	}
 }
 
+// IsValid returns true if this carries and explicit value and
+// is not null.
+func (s String) IsValid() bool {
+	return s.Set && s.Valid
+}
+
+// IsSet returns true if this carries an explicit value (null inclusive)
 func (s String) IsSet() bool {
 	return s.Set
 }

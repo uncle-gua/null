@@ -38,6 +38,13 @@ func TimeFromPtr(t *time.Time) Time {
 	return NewTime(*t, true)
 }
 
+// IsValid returns true if this carries and explicit value and
+// is not null.
+func (t Time) IsValid() bool {
+	return t.Set && t.Valid
+}
+
+// IsSet returns true if this carries an explicit value (null inclusive)
 func (t Time) IsSet() bool {
 	return t.Set
 }
