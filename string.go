@@ -85,7 +85,7 @@ func (s String) MarshalText() ([]byte, error) {
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (s *String) UnmarshalText(text []byte) error {
 	s.Set = true
-	if text == nil || len(text) == 0 {
+	if len(text) == 0 {
 		s.Valid = false
 		return nil
 	}

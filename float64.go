@@ -69,7 +69,7 @@ func (f *Float64) UnmarshalJSON(data []byte) error {
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (f *Float64) UnmarshalText(text []byte) error {
 	f.Set = true
-	if text == nil || len(text) == 0 {
+	if len(text) == 0 {
 		f.Valid = false
 		return nil
 	}

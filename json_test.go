@@ -11,6 +11,8 @@ var (
 )
 
 func TestJSONFrom(t *testing.T) {
+	t.Parallel()
+
 	i := JSONFrom([]byte(`"hello"`))
 	assertJSON(t, i, "JSONFrom()")
 
@@ -26,6 +28,8 @@ func TestJSONFrom(t *testing.T) {
 }
 
 func TestJSONFromPtr(t *testing.T) {
+	t.Parallel()
+
 	n := []byte(`"hello"`)
 	iptr := &n
 	i := JSONFromPtr(iptr)
@@ -41,6 +45,8 @@ type Test struct {
 }
 
 func TestMarshal(t *testing.T) {
+	t.Parallel()
+
 	var i JSON
 
 	test := &Test{Name: "hello", Age: 15}
@@ -71,6 +77,8 @@ func TestMarshal(t *testing.T) {
 }
 
 func TestUnmarshal(t *testing.T) {
+	t.Parallel()
+
 	var i JSON
 
 	test := &Test{}
@@ -104,6 +112,8 @@ func TestUnmarshal(t *testing.T) {
 }
 
 func TestUnmarshalJSON(t *testing.T) {
+	t.Parallel()
+
 	var i JSON
 	err := json.Unmarshal(jsonJSON, &i)
 	maybePanic(err)
@@ -111,6 +121,9 @@ func TestUnmarshalJSON(t *testing.T) {
 
 	var ni JSON
 	err = ni.UnmarshalJSON([]byte{})
+	if err != nil {
+		t.Error(err)
+	}
 	if ni.Valid == false {
 		t.Errorf("expected Valid to be true, got false")
 	}
@@ -120,18 +133,53 @@ func TestUnmarshalJSON(t *testing.T) {
 
 	var null JSON
 	err = null.UnmarshalJSON(nil)
-	if ni.Valid == false {
-		t.Errorf("expected Valid to be true, got false")
+	if err == nil {
+		t.Error("passing a nil should fail")
 	}
-	if !bytes.Equal(null.JSON, nil) {
-		t.Errorf("Expected JSON to be []byte nil, but was not: %#v %#v", null.JSON, []byte(nil))
+}
+
+func TestUnmarshalJSONInStruct(t *testing.T) {
+	t.Parallel()
+
+	type testStruct struct {
+		Val JSON `json:"val,omitempty"`
 	}
-	if !null.Set {
-		t.Error("should be Set")
+
+	// In this case UnmarshalJSON is never called and it should not be
+	// considered set nor valid.
+	t1 := testStruct{}
+	err := json.Unmarshal([]byte(`{}`), &t1)
+	if err != nil {
+		t.Error(err)
+	}
+	if t1.Val.Set {
+		t.Error("should not be set, no value was given")
+	}
+	if t1.Val.Valid {
+		t.Error("should not be valid, no value was given")
+	}
+
+	// In this case UnmarshalJSON is called with [110 117 108 108]
+	// in this case the value contained in the JSON should not exist
+	// and it should be set and !valid.
+	//
+	// This is so {"val": null} unmarshalling can turn into an sql null value.
+	t2 := testStruct{}
+	err = json.Unmarshal([]byte(`{"val": null}`), &t2)
+	if err != nil {
+		t.Error(err)
+	}
+	if !t2.Val.Set {
+		t.Error("should be set")
+	}
+	if t2.Val.Valid {
+		t.Error("should not be valid")
 	}
 }
 
 func TestTextUnmarshalJSON(t *testing.T) {
+	t.Parallel()
+
 	var i JSON
 	err := i.UnmarshalText([]byte(`"hello"`))
 	maybePanic(err)
@@ -144,6 +192,8 @@ func TestTextUnmarshalJSON(t *testing.T) {
 }
 
 func TestMarshalJSON(t *testing.T) {
+	t.Parallel()
+
 	i := JSONFrom([]byte(`"hello"`))
 	data, err := json.Marshal(i)
 	maybePanic(err)
@@ -157,6 +207,8 @@ func TestMarshalJSON(t *testing.T) {
 }
 
 func TestMarshalJSONText(t *testing.T) {
+	t.Parallel()
+
 	i := JSONFrom([]byte(`"hello"`))
 	data, err := i.MarshalText()
 	maybePanic(err)
@@ -170,6 +222,8 @@ func TestMarshalJSONText(t *testing.T) {
 }
 
 func TestJSONPointer(t *testing.T) {
+	t.Parallel()
+
 	i := JSONFrom([]byte(`"hello"`))
 	ptr := i.Ptr()
 	if !bytes.Equal(*ptr, []byte(`"hello"`)) {
@@ -184,6 +238,8 @@ func TestJSONPointer(t *testing.T) {
 }
 
 func TestJSONIsZero(t *testing.T) {
+	t.Parallel()
+
 	i := JSONFrom([]byte(`"hello"`))
 	if i.IsZero() {
 		t.Errorf("IsZero() should be false")
@@ -201,6 +257,8 @@ func TestJSONIsZero(t *testing.T) {
 }
 
 func TestJSONSetValid(t *testing.T) {
+	t.Parallel()
+
 	change := NewJSON(nil, false)
 	assertNullJSON(t, change, "SetValid()")
 	change.SetValid([]byte(`"hello"`))
@@ -208,6 +266,8 @@ func TestJSONSetValid(t *testing.T) {
 }
 
 func TestJSONScan(t *testing.T) {
+	t.Parallel()
+
 	var i JSON
 	err := i.Scan(`"hello"`)
 	maybePanic(err)
@@ -220,6 +280,7 @@ func TestJSONScan(t *testing.T) {
 }
 
 func assertJSON(t *testing.T, i JSON, from string) {
+	t.Helper()
 	if !bytes.Equal(i.JSON, []byte(`"hello"`)) {
 		t.Errorf("bad %s []byte: %#v ≠ %#v\n", from, string(i.JSON), string([]byte(`"hello"`)))
 	}
@@ -229,6 +290,7 @@ func assertJSON(t *testing.T, i JSON, from string) {
 }
 
 func assertNullJSON(t *testing.T, i JSON, from string) {
+	t.Helper()
 	if i.Valid {
 		t.Error(from, "is valid, but should be invalid")
 	}

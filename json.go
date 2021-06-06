@@ -11,7 +11,13 @@ import (
 	"github.com/volatiletech/randomize"
 )
 
-// JSON is a nullable []byte.
+// JSON is a nullable []byte that contains JSON.
+//
+// You might want to use this in the case where you have say a nullable
+// JSON column in postgres for instance, where there is one layer of null for
+// the postgres column, and then you also have the opportunity to have null
+// as a value contained in the json. When unmarshalling json however you
+// cannot set 'null' as a value.
 type JSON struct {
 	JSON  []byte
 	Valid bool
@@ -72,14 +78,25 @@ func (j JSON) Unmarshal(dest interface{}) error {
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
+//
+// Example if you have a struct with a null.JSON called v:
+//
+// 		{}          -> does not call unmarshaljson: !set & !valid
+// 		{"v": null} -> calls unmarshaljson, set & !valid
+//      {"v": {}}   -> calls unmarshaljson, set & valid (json value is '{}')
+//
+// That's to say if 'null' is passed in at the json level we do not capture that
+// value - instead we set the value-level null flag so that an sql value will
+// turn out null.
 func (j *JSON) UnmarshalJSON(data []byte) error {
-	j.Set = true
 	if data == nil {
-		return fmt.Errorf("json: cannot unmarshal nil into Go value of type null.JSON")
+		return fmt.Errorf("null: cannot unmarshal nil into Go value of type null.JSON")
 	}
 
+	j.Set = true
+
 	if bytes.Equal(data, NullBytes) {
-		j.JSON = NullBytes
+		j.JSON = nil
 		j.Valid = false
 		return nil
 	}
@@ -94,7 +111,7 @@ func (j *JSON) UnmarshalJSON(data []byte) error {
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (j *JSON) UnmarshalText(text []byte) error {
 	j.Set = true
-	if text == nil || len(text) == 0 {
+	if len(text) == 0 {
 		j.JSON = nil
 		j.Valid = false
 	} else {

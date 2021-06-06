@@ -51,6 +51,9 @@ func TestUnmarshalBytes(t *testing.T) {
 
 	var null Bytes
 	err = null.UnmarshalJSON(NullBytes)
+	if err != nil {
+		t.Error(err)
+	}
 	if null.Valid {
 		t.Errorf("expected Valid to be false, got true")
 	}
