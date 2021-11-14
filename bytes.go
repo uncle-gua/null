@@ -5,7 +5,7 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 
-	"github.com/volatiletech/null/v8/convert"
+	"github.com/volatiletech/null/v9/convert"
 )
 
 // NullBytes is a global byte slice of JSON null
@@ -138,15 +138,4 @@ func (b Bytes) Value() (driver.Value, error) {
 		return nil, nil
 	}
 	return b.Bytes, nil
-}
-
-// Randomize for sqlboiler
-func (b *Bytes) Randomize(nextInt func() int64, fieldType string, shouldBeNull bool) {
-	if shouldBeNull {
-		b.Bytes = nil
-		b.Valid = false
-	} else {
-		b.Bytes = []byte{byte(nextInt() % 256)}
-		b.Valid = true
-	}
 }

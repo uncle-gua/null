@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/volatiletech/null/v8/convert"
+	"github.com/volatiletech/null/v9/convert"
 )
 
 // Bool is a nullable bool.
@@ -147,15 +147,4 @@ func (b Bool) Value() (driver.Value, error) {
 		return nil, nil
 	}
 	return b.Bool, nil
-}
-
-// Randomize for sqlboiler
-func (b *Bool) Randomize(nextInt func() int64, fieldType string, shouldBeNull bool) {
-	if shouldBeNull {
-		b.Bool = false
-		b.Valid = false
-	} else {
-		b.Bool = nextInt()%2 == 1
-		b.Valid = true
-	}
 }

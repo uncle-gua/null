@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"strconv"
 
-	"github.com/volatiletech/null/v8/convert"
+	"github.com/volatiletech/null/v9/convert"
 )
 
 // Float64 is a nullable float64.
@@ -131,15 +131,4 @@ func (f Float64) Value() (driver.Value, error) {
 		return nil, nil
 	}
 	return f.Float64, nil
-}
-
-// Randomize for sqlboiler
-func (f *Float64) Randomize(nextInt func() int64, fieldType string, shouldBeNull bool) {
-	if shouldBeNull {
-		f.Float64 = 0
-		f.Valid = false
-	} else {
-		f.Float64 = float64(nextInt()%10)/10.0 + float64(nextInt()%10)
-		f.Valid = true
-	}
 }

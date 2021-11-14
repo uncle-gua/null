@@ -5,8 +5,6 @@ import (
 	"database/sql/driver"
 	"fmt"
 	"time"
-
-	"github.com/volatiletech/randomize"
 )
 
 // Time is a nullable time.Time. It supports SQL and JSON serialization.
@@ -140,15 +138,4 @@ func (t Time) Value() (driver.Value, error) {
 		return nil, nil
 	}
 	return t.Time, nil
-}
-
-// Randomize for sqlboiler
-func (t *Time) Randomize(nextInt func() int64, fieldType string, shouldBeNull bool) {
-	if shouldBeNull {
-		t.Time = time.Time{}
-		t.Valid = false
-	} else {
-		t.Time = randomize.Date(nextInt)
-		t.Valid = true
-	}
 }

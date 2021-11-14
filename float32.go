@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"strconv"
 
-	"github.com/volatiletech/null/v8/convert"
+	"github.com/volatiletech/null/v9/convert"
 )
 
 // Float32 is a nullable float32.
@@ -136,15 +136,4 @@ func (f Float32) Value() (driver.Value, error) {
 		return nil, nil
 	}
 	return float64(f.Float32), nil
-}
-
-// Randomize for sqlboiler
-func (f *Float32) Randomize(nextInt func() int64, fieldType string, shouldBeNull bool) {
-	if shouldBeNull {
-		f.Float32 = 0
-		f.Valid = false
-	} else {
-		f.Float32 = float32(nextInt()%10)/10.0 + float32(nextInt()%10)
-		f.Valid = true
-	}
 }

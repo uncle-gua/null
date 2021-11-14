@@ -8,7 +8,7 @@ import (
 	"math"
 	"strconv"
 
-	"github.com/volatiletech/null/v8/convert"
+	"github.com/volatiletech/null/v9/convert"
 )
 
 // Uint8 is an nullable uint8.
@@ -142,15 +142,4 @@ func (u Uint8) Value() (driver.Value, error) {
 		return nil, nil
 	}
 	return int64(u.Uint8), nil
-}
-
-// Randomize for sqlboiler
-func (u *Uint8) Randomize(nextInt func() int64, fieldType string, shouldBeNull bool) {
-	if shouldBeNull {
-		u.Uint8 = 0
-		u.Valid = false
-	} else {
-		u.Uint8 = uint8(nextInt() % math.MaxUint8)
-		u.Valid = true
-	}
 }

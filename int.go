@@ -4,10 +4,9 @@ import (
 	"bytes"
 	"database/sql/driver"
 	"encoding/json"
-	"math"
 	"strconv"
 
-	"github.com/volatiletech/null/v8/convert"
+	"github.com/volatiletech/null/v9/convert"
 )
 
 // Int is an nullable int.
@@ -138,15 +137,4 @@ func (i Int) Value() (driver.Value, error) {
 		return nil, nil
 	}
 	return int64(i.Int), nil
-}
-
-// Randomize for sqlboiler
-func (i *Int) Randomize(nextInt func() int64, fieldType string, shouldBeNull bool) {
-	if shouldBeNull {
-		i.Int = 0
-		i.Valid = false
-	} else {
-		i.Int = int(int32(nextInt() % math.MaxInt32))
-		i.Valid = true
-	}
 }
